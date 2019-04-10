@@ -2,6 +2,7 @@ package poker;
 
 import java.util.*;
 
+//ggdfgdfgfd
 public class Card{
         private int rank;
         private int suit;
