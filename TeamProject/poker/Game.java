@@ -5,51 +5,109 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import communications.ChatClient;
+import communications.ChatServer;
+
 public class Game 
 {
 	// variables
-	Dealer deck = new Dealer();
-	Game game = new Game();
-	int numPlayers = 0;
-	int cardCounter = 0;
-	int commCounter = 0;
-	int pot = 0;
-	boolean fold = false;
+	private Dealer deck = new Dealer();
+	private Game game = new Game();
+	private int numPlayers = 0;
+	private int cardCounter = 0;
+	private int commCounter = 0;
+	private int pot = 0;
+	private boolean fold = false;
+	private boolean isplaying = false;
+	
 	ArrayList<Player> players;
+	ArrayList<Player> waitingplayers;
+	
+	ChatServer server;
 	
 	public Game()
 	{
 		// initializations 
 		//numPlayers = game.getNumberOfPlayers();
 		players = new ArrayList<Player>();
-
+		waitingplayers = new ArrayList<Player>();
 	}
 	
-	public void setPlayers(Player p)
+	public boolean isPlaying()
 	{
-		//If this is the first player, just add the dude to the list of players in the game.
-		if (players.isEmpty())
-			players.add(p);
+		return isplaying;
+	}
+	
+	public boolean setPlayers(Player p)
+	{
+		//Only add the player while the game isn't already being played.
+		/*if (isplaying = false)
+		{
+			//If this is the first player, just add the dude to the list of players in the game.
+			if (players.isEmpty())
+				players.add(p);
 
-		//If the player doesnt exist, then add him to players as well.
-		//If the player does exist, set the player at that index equal to the incoming player, since they are the same person,
-		//but maybe with a different move.
-		//Check players array	
+			//If the player doesnt exist, then add him to players as well.
+			//If the player does exist, set the player at that index equal to the incoming player, since they are the same person,
+			//but maybe with a different move.
+			//Check players array	
+			else
+			{
+				for (int i=0; i<players.size(); i++)
+				{
+					if (p.getID() == players.get(i).getID())
+					{
+						players.set(i, p);
+						return;
+					}
+				}
+
+				//If the program gets here, it means it couldn't find the player already existing. In that case, just add player to the
+				//arraylist of players.
+				players.add(p);
+			}}
+		//If game is ongoing, add the players to the waitlist.
 		else
 		{
-			for (int i=0; i<players.size(); i++)
-			{
-				if (p.getID() == players.get(i).getID())
-				{
-					players.set(i, p);
-					return;
-				}
-			}
-			
-			//If the program gets here, it means it couldn't find the player already existing. In that case, just add player to the
-			//arraylist of players.
+			waitingplayers.add(p);
+		}*/
+		
+		if ((!players.contains(p))&&(game.isPlaying()==false))
+		{
 			players.add(p);
+			return true;
 		}
+		//If the player is new, but game is being played, save client in waitlist
+		else if ((!players.contains(p))&&(game.isPlaying()==true))
+		{
+			waitingplayers.add(p);
+			return false;
+		}
+		
+		//Else the player has already been added before, return false.
+		return false;
+	}
+	
+	public void setServer(ChatServer s)
+	{
+		this.server = s;
+	}
+	
+	public void endRound()
+	{
+		//When the round ends, set isplaying to false.
+		isplaying = false;
+		
+		//Add the waiting players to the players list, and clear waitlist.
+		players.addAll(waitingplayers);
+		server.addWaitingClients();
+		waitingplayers = null;
+	}
+	
+	public void beginRound()
+	{
+		//When round begins, set isplaying to true.
+		isplaying = true;
 	}
 	
 	public Player getPlayer(long a)

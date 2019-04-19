@@ -18,6 +18,7 @@ public class ChatServer extends AbstractServer
 	private Game game;
 	private GameData data;
 	private ArrayList<ConnectionToClient> clients;
+	private ArrayList<ConnectionToClient> waitingclients;
 
 	public ChatServer() throws IOException
 	{
@@ -30,10 +31,10 @@ public class ChatServer extends AbstractServer
 		clients = new ArrayList<ConnectionToClient>();
 	}
 	
-	public void setClients(ConnectionToClient p)
+	public boolean setClients(ConnectionToClient p)
 	{
 		//If this is the first player, just add the dude to the list of players in the game.
-		if (clients.isEmpty())
+		/*if (clients.isEmpty())
 			clients.add(p);
 
 		//If the player doesnt exist, then add him to players as well.
@@ -53,8 +54,26 @@ public class ChatServer extends AbstractServer
 			
 			//If the program gets here, it means it couldn't find the player already existing. In that case, just add player to the
 			//arraylist of players.
+		 * 
+		 */
+		//If clients doesn't contain the passed in client, and game is not being played,
+		//the passed in client will be added.
+		if ((!clients.contains(p))&&(game.isPlaying()==false))
+		{
 			clients.add(p);
+			return true;
 		}
+		
+		//If the client is new, but game is being played, save client in waitlist
+		else if ((!clients.contains(p))&&(game.isPlaying()==true))
+		{
+			waitingclients.add(p);
+			return false;
+		}
+		
+		//Else the client has already been added before, return true.
+		return false;
+		
 	}
 
 	public ChatServer(int port)
@@ -62,9 +81,20 @@ public class ChatServer extends AbstractServer
 		super(port);
 	}
 
-	void setDatabase(Database database)
+	public void setDatabase(Database database)
 	{
 		this.database = database;
+	}
+	
+	public void setGame(Game g)
+	{
+		this.game = g;
+	}
+	
+	public void addWaitingClients()
+	{
+		clients.addAll(waitingclients);
+		waitingclients = null;
 	}
 
 	public void setLog(JTextArea log)
@@ -162,21 +192,56 @@ public class ChatServer extends AbstractServer
 		//If a player makes a move/joins.
 		else if (arg0 instanceof Player)
 		{
-			//Set this client in the clients arraylist
-			setClients(arg1);
-			//Set this new player in the game object.
-			game.setPlayers((Player)arg0);
-			//Check if the player made a bet
-			//If they did make a bet, set the GameData's bet equal to it, to let all the players know.
-			//Then set the player's bet equal to 0.
-			if (((Player)arg0).getMoves().getbet()>0)
+			//First check if the players exceeded our limit
+			if ((clients.size() + waitingclients.size())<=5)
 			{
-				data.betsetter(((Player)arg0).getMoves().getbet());
-				game.getPlayer(arg1.getId()).getMoves().setbet(0);
+				//If the client has already been added before, and the game is being played,
+				//then they are just responding with their moves. 
+				//Send their movies to all the other players.
+				if (!setClients(arg1) && !game.setPlayers((Player)arg0) && game.isPlaying())
+				{
+					//Check if the player made a bet
+					//If they did make a bet, set the GameData's bet equal to it, to let all the players know.
+					//Then set the player's bet equal to 0.
+					if (((Player)arg0).getMoves().getbet()>0)
+					{
+						data.betsetter(((Player)arg0).getMoves().getbet());
+						game.getPlayer(arg1.getId()).getMoves().setbet(0);
+					}
+					
+					//Let all the players know of the player's move.
+					letAllKnow();
+					
+				}
+				
+				//Else if the game is not being played, add the player and client. If they are new,
+				//they will get added to the list of clients/players.
+				else if (!game.isPlaying())
+				{
+					//If they have been added successfully, they will be sent their id and seat number.
+					if(setClients(arg1) && game.setPlayers((Player)arg0))
+					{
+						//Send id and seat number.
+						try {
+							arg1.sendToClient(new NewPlayerData(arg1.getId(),clients.size()+1));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+					}
+				}
 			}
 			
-			//Let all the players know of the player's move.
-			letAllKnow();
+			else {
+			//Else let the player know, they can't join
+			try {
+				arg1.sendToClient("Full!");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			}
 		}
 
 	}

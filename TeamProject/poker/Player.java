@@ -9,6 +9,7 @@ public class Player {
     private Card[] holeCards = new Card[2];
     private Move move;
     private long id;
+    private int seatno;
     
     //constructor
     public Player(){
@@ -25,6 +26,16 @@ public class Player {
     public long getID()
     {
     	return id;
+    }
+    
+    public void setSeat(int s)
+    {
+    	this.seatno = s;
+    }
+    
+    public int getSeat()
+    {
+    	return seatno;
     }
     
     public Move getMoves()
