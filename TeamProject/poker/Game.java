@@ -17,6 +17,7 @@ public class Game
 	private int cardCounter = 0;
 	private int commCounter = 0;
 	private int pot = 0;
+	private int turn = 0;
 	private boolean fold = false;
 	private boolean isplaying = false;
 	
@@ -47,7 +48,11 @@ public class Game
 			if (players.isEmpty())
 			{
 				players.add(p);
-				return
+				
+				//Give turn to the next player.
+				startRound();
+				
+				return;
 			}
 
 			//If the player doesnt exist, then add him to players as well.
@@ -110,9 +115,79 @@ public class Game
 		return false;*/
 	}
 	
+	public void rotateTurn()
+	{
+		turn++;
+		
+		//If we are out of players, end round.
+		if (turn>players.size())
+		{
+			endRound();
+			//Reset turn
+			turn = 1;
+			return;
+		}
+		
+		//Else lets players know if they can play
+		for (int i=0; i<players.size();i++)
+		{
+			if (players.get(i).getSeat() != turn)
+			{
+				try {
+					server.getClients().get(i).sendToClient("Freeze!");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			else
+			{
+				try {
+					server.getClients().get(i).sendToClient("go");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}
+		
+	}
+	
+	public void startRound()
+	{
+		turn=2;
+		isplaying = true;
+		
+		for (int i=0; i<players.size();i++)
+		{
+			if (players.get(i).getSeat() != turn)
+			{
+				try {
+					server.getClients().get(i).sendToClient("Freeze!");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			else
+			{
+				try {
+					server.getClients().get(i).sendToClient("go");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		}
+	}
+	
 	public int checkTurn()
 	{
-		
+		return turn;
 	}
 	
 	public void setServer(ChatServer s)
@@ -128,13 +203,8 @@ public class Game
 		//Add the waiting players to the players list, and clear waitlist.
 		players.addAll(waitingplayers);
 		server.addWaitingClients();
+		
 		waitingplayers = null;
-	}
-	
-	public void beginRound()
-	{
-		//When round begins, set isplaying to true.
-		isplaying = true;
 	}
 	
 	public Player getPlayer(long a)

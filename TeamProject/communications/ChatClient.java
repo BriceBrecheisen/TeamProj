@@ -23,7 +23,7 @@ public class ChatClient extends AbstractClient
 		data = new GameData();
 		player = new Player();
 	}
-	
+
 	public void setMainPanel(MainPanel m)
 	{
 		mainpanel = m;
@@ -60,19 +60,19 @@ public class ChatClient extends AbstractClient
 			{
 				// createcontrol.createAccountSuccess();
 			}
-			
+
 			//If the server returns waiting, then the player has to wait to start playing.
 			else if (((String)arg0).equals("wait"))
 			{
 				//mainpanel.waitPanel();
 				//When they are waiting for round to end.
 			}
-			
+
 			else if (((String)arg0).equals("go"))
 			{
 				//mainpanel.getgamePanel();
 			}
-			
+
 			else if (((String)arg0).equals("Full!"))
 			{
 				//mainpanel.FullPanel();
@@ -84,9 +84,9 @@ public class ChatClient extends AbstractClient
 				//When its not their turn just yet.
 			}
 		}
-		
+
 		//If the server sends a GameData object
-		
+
 		//If the server sends a NewPlayerData object
 		if (arg0 instanceof NewPlayerData)
 		{
@@ -94,7 +94,7 @@ public class ChatClient extends AbstractClient
 			//Set the players seat number and id number
 			player.setID(temp.getId());
 			player.setSeat(temp.getSeat());
-			
+
 		}
 
 	}
