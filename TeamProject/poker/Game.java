@@ -38,14 +38,17 @@ public class Game
 		return isplaying;
 	}
 	
-	public boolean setPlayers(Player p)
+	public void setPlayers(Player p)
 	{
 		//Only add the player while the game isn't already being played.
-		/*if (isplaying = false)
+		if (!isplaying)
 		{
 			//If this is the first player, just add the dude to the list of players in the game.
 			if (players.isEmpty())
+			{
 				players.add(p);
+				return
+			}
 
 			//If the player doesnt exist, then add him to players as well.
 			//If the player does exist, set the player at that index equal to the incoming player, since they are the same person,
@@ -65,14 +68,28 @@ public class Game
 				//If the program gets here, it means it couldn't find the player already existing. In that case, just add player to the
 				//arraylist of players.
 				players.add(p);
+				return;
 			}}
-		//If game is ongoing, add the players to the waitlist.
-		else
-		{
-			waitingplayers.add(p);
-		}*/
 		
-		if ((!players.contains(p))&&(game.isPlaying()==false))
+		//If game is ongoing, add the players to the waitlist if they are new, else update their moves.
+		else if (isplaying)
+		{
+			//Update moves if they exist.
+			for (int i=0; i<players.size(); i++)
+			{
+				if (p.getID() == players.get(i).getID())
+				{
+					players.set(i, p);
+					return;
+				}
+			}
+
+			//Else, add them to waitlist and return.
+			waitingplayers.add(p);
+			return;
+		}
+		
+		/*if ((!players.contains(p))&&(game.isPlaying()==false))
 		{
 			players.add(p);
 			return true;
@@ -84,8 +101,18 @@ public class Game
 			return false;
 		}
 		
+		else if ((players.contains(p))&&(game.isPlaying()==true))
+		{
+			return true;
+		}
+		
 		//Else the player has already been added before, return false.
-		return false;
+		return false;*/
+	}
+	
+	public int checkTurn()
+	{
+		
 	}
 	
 	public void setServer(ChatServer s)

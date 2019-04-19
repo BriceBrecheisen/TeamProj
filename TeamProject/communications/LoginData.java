@@ -1,4 +1,4 @@
-package lab5out;
+package communications;
 
 import java.io.Serializable;
 

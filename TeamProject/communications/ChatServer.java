@@ -31,7 +31,7 @@ public class ChatServer extends AbstractServer
 		clients = new ArrayList<ConnectionToClient>();
 	}
 	
-	public boolean setClients(ConnectionToClient p)
+	public String setClients(ConnectionToClient p)
 	{
 		//If this is the first player, just add the dude to the list of players in the game.
 		/*if (clients.isEmpty())
@@ -61,19 +61,24 @@ public class ChatServer extends AbstractServer
 		if ((!clients.contains(p))&&(game.isPlaying()==false))
 		{
 			clients.add(p);
-			return true;
+			return "added";
 		}
 		
 		//If the client is new, but game is being played, save client in waitlist
 		else if ((!clients.contains(p))&&(game.isPlaying()==true))
 		{
 			waitingclients.add(p);
-			return false;
+			return "wait";
 		}
 		
 		//Else the client has already been added before, return true.
-		return false;
+		else if ((clients.contains(p))&&(game.isPlaying()==true))
+		{
+			return "playing";
+		}
 		
+		else
+			return "";
 	}
 
 	public ChatServer(int port)
@@ -195,11 +200,17 @@ public class ChatServer extends AbstractServer
 			//First check if the players exceeded our limit
 			if ((clients.size() + waitingclients.size())<=5)
 			{
+				if (game.isPlaying())
+				{
 				//If the client has already been added before, and the game is being played,
 				//then they are just responding with their moves. 
 				//Send their movies to all the other players.
-				if (!setClients(arg1) && !game.setPlayers((Player)arg0) && game.isPlaying())
+				if (setClients(arg1).equals("playing"))
 				{
+					//Check if its their turn.
+					
+					//If it is their turn, then set their new movies into game.
+					game.setPlayers((Player)arg0);
 					//Check if the player made a bet
 					//If they did make a bet, set the GameData's bet equal to it, to let all the players know.
 					//Then set the player's bet equal to 0.
@@ -211,16 +222,34 @@ public class ChatServer extends AbstractServer
 					
 					//Let all the players know of the player's move.
 					letAllKnow();
-					
 				}
+				
+				else if (setClients(arg1).equals("wait"))
+				{
+					//Add the player data to the player waitlist.
+					game.setPlayers((Player)arg0);
+					
+					//Tell client to wait.
+					try {
+						arg1.sendToClient("wait");
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}}
 				
 				//Else if the game is not being played, add the player and client. If they are new,
 				//they will get added to the list of clients/players.
 				else if (!game.isPlaying())
 				{
 					//If they have been added successfully, they will be sent their id and seat number.
-					if(setClients(arg1) && game.setPlayers((Player)arg0))
+					if(setClients(arg1).equals("Added"))
 					{
+						Player temp = (Player)arg0;
+						temp.setSeat(clients.size()+1);
+						//Add Player data to the game.
+						game.setPlayers(temp);
+						
 						//Send id and seat number.
 						try {
 							arg1.sendToClient(new NewPlayerData(arg1.getId(),clients.size()+1));
@@ -231,6 +260,7 @@ public class ChatServer extends AbstractServer
 						
 					}
 				}
+				
 			}
 			
 			else {

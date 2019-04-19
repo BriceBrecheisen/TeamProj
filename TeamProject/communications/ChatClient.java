@@ -93,6 +93,7 @@ public class ChatClient extends AbstractClient
 			NewPlayerData temp = (NewPlayerData)arg0;
 			//Set the players seat number and id number
 			player.setID(temp.getId());
+			player.setSeat(temp.getSeat());
 			
 		}
 
