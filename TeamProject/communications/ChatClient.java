@@ -75,12 +75,12 @@ public class ChatClient extends AbstractClient
 			
 			else if (((String)arg0).equals("Full!"))
 			{
-				//mainpanel.FullPanel();
+				//MainPanel.fullPanel();
 				//Game is full.
 			}
 			else if (((String)arg0).equals("Freeze!"))
 			{
-				//mainpanel.FullPanel();
+				//mainpanel.freezePanel();
 				//When its not their turn just yet.
 			}
 		}
