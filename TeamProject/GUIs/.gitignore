@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /CreateLogin.class
 /GameFrame.class
 /GamePanel.class
@@ -8,3 +9,16 @@
 /ServerGUI$2.class
 /ServerGUI$3.class
 /ServerGUI$4.class
+=======
+/LoginPanel$1.class
+/LoginPanel$2.class
+/LoginPanel$3.class
+/LoginPanel$4.class
+/LoginPanel$5.class
+/MainPanel$1.class
+/MainPanel$2.class
+/MainPanel$3.class
+/MainPanel$4.class
+/MainPanel$5.class
+/MainPanel.class
+>>>>>>> branch 'master' of https://github.com/BriceBrecheisen/TeamProj.git
