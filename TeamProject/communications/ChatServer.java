@@ -30,8 +30,8 @@ public class ChatServer extends AbstractServer
 		data = new GameData();
 		clients = new ArrayList<ConnectionToClient>();
 	}
-	
-	public boolean setClients(ConnectionToClient p)
+
+	public String setClients(ConnectionToClient p)
 	{
 		//If this is the first player, just add the dude to the list of players in the game.
 		/*if (clients.isEmpty())
@@ -51,7 +51,7 @@ public class ChatServer extends AbstractServer
 					return;
 				}
 			}
-			
+
 			//If the program gets here, it means it couldn't find the player already existing. In that case, just add player to the
 			//arraylist of players.
 		 * 
@@ -61,19 +61,29 @@ public class ChatServer extends AbstractServer
 		if ((!clients.contains(p))&&(game.isPlaying()==false))
 		{
 			clients.add(p);
-			return true;
+			return "added";
 		}
-		
+
 		//If the client is new, but game is being played, save client in waitlist
 		else if ((!clients.contains(p))&&(game.isPlaying()==true))
 		{
 			waitingclients.add(p);
-			return false;
+			return "wait";
 		}
-		
+
 		//Else the client has already been added before, return true.
-		return false;
-		
+		else if ((clients.contains(p))&&(game.isPlaying()==true))
+		{
+			return "playing";
+		}
+
+		else
+			return "";
+	}
+
+	public ArrayList<ConnectionToClient> getClients()
+	{
+		return clients;
 	}
 
 	public ChatServer(int port)
@@ -85,12 +95,12 @@ public class ChatServer extends AbstractServer
 	{
 		this.database = database;
 	}
-	
+
 	public void setGame(Game g)
 	{
 		this.game = g;
 	}
-	
+
 	public void addWaitingClients()
 	{
 		clients.addAll(waitingclients);
@@ -188,69 +198,99 @@ public class ChatServer extends AbstractServer
 				} 
 			}
 		}
-		
+
 		//If a player makes a move/joins.
 		else if (arg0 instanceof Player)
 		{
 			//First check if the players exceeded our limit
 			if ((clients.size() + waitingclients.size())<=5)
 			{
-				//If the client has already been added before, and the game is being played,
-				//then they are just responding with their moves. 
-				//Send their movies to all the other players.
-				if (!setClients(arg1) && !game.setPlayers((Player)arg0) && game.isPlaying())
+				if (game.isPlaying())
 				{
-					//Check if the player made a bet
-					//If they did make a bet, set the GameData's bet equal to it, to let all the players know.
-					//Then set the player's bet equal to 0.
-					if (((Player)arg0).getMoves().getbet()>0)
+					//If the client has already been added before, and the game is being played,
+					//then they are just responding with their moves. 
+					//Send their movies to all the other players.
+					if (setClients(arg1).equals("playing"))
 					{
-						data.betsetter(((Player)arg0).getMoves().getbet());
-						game.getPlayer(arg1.getId()).getMoves().setbet(0);
+						//Check if its their turn.
+						if (game.checkTurn() == ((Player)arg0).getSeat())
+						{
+							//If it is their turn, then set their new movies into game.
+							game.setPlayers((Player)arg0);
+							//Check if the player made a bet
+							//If they did make a bet, set the GameData's bet equal to it, to let all the players know.
+							//Then set the player's bet equal to 0.
+							if (((Player)arg0).getMoves().getbet()>0)
+							{
+								data.betsetter(((Player)arg0).getMoves().getbet());
+								game.getPlayer(arg1.getId()).getMoves().setbet(0);
+							}
+
+							//Let all the players know of the player's move.
+							letAllKnow();
+
+							//Rotate round
+							game.rotateTurn();
+						}
 					}
-					
-					//Let all the players know of the player's move.
-					letAllKnow();
-					
-				}
-				
+
+					else if (setClients(arg1).equals("wait"))
+					{
+						//Add the player data to the player waitlist.
+						game.setPlayers((Player)arg0);
+
+						//Tell client to wait.
+						try {
+							arg1.sendToClient("wait");
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}}
+
 				//Else if the game is not being played, add the player and client. If they are new,
 				//they will get added to the list of clients/players.
 				else if (!game.isPlaying())
 				{
 					//If they have been added successfully, they will be sent their id and seat number.
-					if(setClients(arg1) && game.setPlayers((Player)arg0))
+					if(setClients(arg1).equals("Added"))
 					{
+						Player temp = (Player)arg0;
+						temp.setSeat(clients.size());
+						//Add Player data to the game.
+						game.setPlayers(temp);
+
 						//Send id and seat number.
 						try {
-							arg1.sendToClient(new NewPlayerData(arg1.getId(),clients.size()+1));
+							arg1.sendToClient(new NewPlayerData(arg1.getId(),clients.size()));
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						
+
 					}
 				}
+
 			}
-			
+
 			else {
-			//Else let the player know, they can't join
-			try {
-				arg1.sendToClient("Full!");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				//Else let the player know, they can't join
+				try {
+					arg1.sendToClient("Full!");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		}
 
 	}
-	
+
 	public void letAllKnow()
 	{	
 		//First create the game data object, so that it can be sent to all players.
 		data.playersSetter(game.getAllPlayers());
-		
+
 		//Send player move info to all players.
 		for (int i=0; i<clients.size(); i++)
 		{
@@ -262,16 +302,16 @@ public class ChatServer extends AbstractServer
 				System.out.println("Could not send data to player!");
 			}
 		}
-		
+
 		//Clear out game data to be reused for next round of moves by players.
 		resetGameData();
-		
+
 	}
-	
+
 	public void setWinnerInfo(String w)
 	{
 		data.winnerSetter(w);
-		
+
 		//Send winner info to all players.
 		for (int i=0; i<clients.size(); i++)
 		{
@@ -283,11 +323,11 @@ public class ChatServer extends AbstractServer
 				System.out.println("Could not send data to player!");
 			}
 		}
-		
+
 		//Reset Gamedata object
 		resetGameData();
 	}
-	
+
 	public void resetGameData()
 	{
 		data.playersSetter(null);

@@ -1,4 +1,4 @@
-package lab7out;
+package communications;
 
 import java.io.Serializable;
 
