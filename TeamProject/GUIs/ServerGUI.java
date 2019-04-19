@@ -1,7 +1,6 @@
-package communications;
+package GUIs;
 
 import java.awt.BorderLayout;
-
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -16,6 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import communications.*;
 
 public class ServerGUI extends JFrame {
 	
@@ -35,7 +36,7 @@ public class ServerGUI extends JFrame {
 	  private ChatServer server;
 	  
 	  
-	public ServerGUI(String title)
+	public ServerGUI(String title) throws IOException
 	{
 		//Setting up this JFrame.
 	    this.setTitle(title);
@@ -227,7 +228,7 @@ public class ServerGUI extends JFrame {
 	    this.setVisible(true);
 	}
 
-	public static void main(String[] args)
+	public static void main(String[] args) throws IOException
 	  {
 	    new ServerGUI("Server"); //Hardcoded title of the GUI
 	  }

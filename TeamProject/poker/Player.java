@@ -7,9 +7,29 @@ import java.util.ArrayList;
 
 public class Player {
     private Card[] holeCards = new Card[2];
-
+    private Move move;
+    private long id;
+    
     //constructor
     public Player(){
+    	//Starting the move object for the player.
+    	move = new Move();
+    	id = 0;
+    }
+    
+    public void setID(long id)
+    {
+    	this.id = id;
+    }
+    
+    public long getID()
+    {
+    	return id;
+    }
+    
+    public Move getMoves()
+    {
+    	return move;
     }
 
     public Player(Card card1, Card card2){
@@ -45,7 +65,7 @@ public class Player {
 		String userInput = "";
 
 		// get bet from player
-		System.out.println("Enter your action(bet,fold,check): ");
+		System.out.println("Select your action: ");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		try { 

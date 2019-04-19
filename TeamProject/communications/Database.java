@@ -19,7 +19,7 @@ public class Database
     //Add your code here
 	//Read properties file
 	 Properties prop = new Properties();
-	 FileInputStream fis = new FileInputStream("lab7in/db.properties");
+	 FileInputStream fis = new FileInputStream("lab7out/db.properties");
 	 prop.load(fis);
 	 String url = prop.getProperty("url");
 	 String user = prop.getProperty("user");
@@ -97,6 +97,66 @@ public class Database
       //Execute a DML statement
       stmt.execute(dml);
 	  
+  }
+  
+  //The following methods are implemented in order to insert/check users within the database.
+  public boolean createUser(User user)
+  {
+	  //Creating user, i.e. inserting the users information into the user table.
+	  //Starting the query string
+	  //Adding the users information into the query string.
+	  String query = "INSERT into usertable values('"+user.getUsername()
+	  +"',aes_encrypt('"+user.getPassword()+"','key'),"+user.getID()+");";
+	  
+	  //Executing the query as a DML
+	  try {
+		executeDML(query);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		return false;
+	}
+	  return true;
+  }
+  
+  public boolean checkUser(User user)
+  {
+	  //Checking if the user already exists in the database
+	  //Starting the query string
+	  //Adding user's user-name into the query so that it can be checked for.
+	  String query = "SELECT username,aes_decrypt(password,'key') FROM usertable WHERE username='"+user.getUsername()+"';";
+	  
+	  //Executing the query, and catching the results in an ArrayList object.
+	  ArrayList<String> result = query(query);
+	  
+	  //If the size of the results returned array is 0, it means the user doesn't exist.
+	  if (result.size()==0)
+		  return false;
+	  
+	  //Else if the password doesn't match, return false as well.
+	  else if (!(result.get(0).split(",")[1].equals(user.getPassword())))
+		  return false;
+	  
+	  //Else, the user exists, and the user-name/password combination is correct. So return true my friend.
+	  return true;
+  }
+  
+  public boolean checkName(User user)
+  {
+	//Checking if the user already exists in the database
+	  //Starting the query string
+	  //Adding user's user-name into the query so that it can be checked for.
+	  String query = "SELECT username FROM usertable WHERE username='"+user.getUsername()+"';";
+	  
+	  //Executing the query, and catching the results in an ArrayList object.
+	  ArrayList<String> result = query(query);
+	  
+	  //If the size of the results returned array is 0, it means the user doesn't exist.
+	  if (result.size()==0)
+		  return false;
+	  
+	  //Else, the user exists. So return true my friend.
+	  return true;
   }
   
 }
