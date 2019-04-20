@@ -305,6 +305,7 @@ public class MainPanel extends JPanel {
 	
 	public void gamePanel()
 	{
+		//this is just a fake comment
 		waiting.setVisible(false);
 		gamegui.setVisible(true);
 
