@@ -46,6 +46,8 @@ public class MainPanel extends JPanel {
 	private JPasswordField password3;
 	private JButton newuserlogin;
 	private JButton previous;
+	private JTextField port2;
+	private JTextField IP2;
 	
 	private JPanel home;
 	private JLabel welcome;
@@ -110,6 +112,7 @@ public class MainPanel extends JPanel {
 		
 		user = new String();
 		self = this;
+		player = new Player();
 		
 		//Set up client.
 		client = new ChatClient();
@@ -152,6 +155,13 @@ public class MainPanel extends JPanel {
 		gamegui.setLayout(null);
 		
 		usertext = new JTextField();
+		password2 = new JPasswordField();
+		password1 = new JPasswordField();
+		password3 = new JPasswordField();
+		IP1 = new JTextField();
+		port1 = new JTextField();
+		IP2 = new JTextField();
+		port2 = new JTextField();
 		
 		loginPanel();
 	}
@@ -181,19 +191,19 @@ public class MainPanel extends JPanel {
 		IP.setForeground(Color.GREEN);
 		loginpanel.add(IP);
 		
-		port1 = new JTextField();
+		port1.setText(null);
 		port1.setBounds(400,65,150,30);
 		loginpanel.add(port1);
 		
-		IP1 = new JTextField();
+		IP1.setText(null);
 		IP1.setBounds(400,125,150,30);
 		loginpanel.add(IP1);
 		
-		//usertext = new JTextField();
+		usertext.setText(null);
 		usertext.setBounds(100, 65, 150, 30);
 		loginpanel.add(usertext);
 		
-		password1 = new JPasswordField();
+		password1.setText(null);
 		password1.setBounds(100, 125, 150, 30);
 		loginpanel.add(password1);
 		
@@ -307,21 +317,21 @@ public class MainPanel extends JPanel {
 		IP.setForeground(Color.GREEN);
 		newuser.add(IP);
 		
-		port1 = new JTextField();
-		port1.setBounds(400,65,150,30);
+		port2.setText("");
+		port2.setBounds(400,65,150,30);
 		newuser.add(port1);
 		
-		IP1 = new JTextField();
-		IP1.setBounds(400,125,150,30);
+		IP2.setText("");
+		IP2.setBounds(400,125,150,30);
 		newuser.add(IP1);
 		
 		//Poop
 		
-		password2 = new JPasswordField();
+		password2.setText(null);
 		password2.setBounds(170,125,150,30);
 		newuser.add(password2);
 		
-		password3 = new JPasswordField();
+		password3.setText(null);
 		password3.setBounds(170,185,150,30);
 		newuser.add(password3);
 		
@@ -331,11 +341,11 @@ public class MainPanel extends JPanel {
 			public void mouseClicked(MouseEvent arg0) {
 				if(new String(password2.getPassword()).equals(new String(password3.getPassword())))
 				{
-					String porky = port1.getText();
+					String porky = port2.getText();
 					int porty = Integer.parseInt(porky);
 					
 					client.setPort(porty);
-					client.setHost(IP1.getText());
+					client.setHost(IP2.getText());
 					
 					try {
 						client.openConnection();
@@ -415,7 +425,6 @@ public class MainPanel extends JPanel {
 				home.setVisible(false);
 				try {
 					//Send this player's data to the server.
-					Player player = new Player();
 					player.setUsername(user);
 					
 					client.openConnection();
@@ -661,6 +670,12 @@ public class MainPanel extends JPanel {
 		waitplease.setBounds(300, 300, 700, 300);
 		waitplease.setForeground(Color.WHITE);
 		waiting.add(waitplease);
+	}
+	
+	public void setplay(Player players)
+	{
+		this.player = players;
+		//dummy
 	}
 	
 	public void setVis()

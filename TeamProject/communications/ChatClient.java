@@ -129,6 +129,7 @@ public class ChatClient extends AbstractClient
 			//Set the players seat number and id number
 			player.setID(temp.getId());
 			player.setSeat(temp.getSeat());
+			mainpanel.setplay(player);
 			
 			try {
 				mainpanel.gamePanel();
@@ -137,6 +138,8 @@ public class ChatClient extends AbstractClient
 				e.printStackTrace();
 			}
 		}
+		
+		//Dummy comment
 		
 		//If the server sends card information
 		else if (arg0 instanceof Cards)
