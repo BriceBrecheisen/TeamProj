@@ -455,7 +455,7 @@ public class MainPanel extends JPanel {
 	public void gamePanel() throws IOException
 	{
 		//this is just a fake comment
-		waiting.setVisible(false);
+		//waiting.setVisible(false);
 		home.setVisible(false);
 		gamegui.setVisible(true);
 
