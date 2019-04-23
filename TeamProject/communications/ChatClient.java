@@ -20,6 +20,11 @@ public class ChatClient extends AbstractClient
 		data = new GameData();
 		player = new Player();
 	}
+	
+	public void setUsername(String s)
+	{
+		username = s;
+	}
 
 	public ChatClient(String ip, int port)
 	{

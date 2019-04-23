@@ -220,6 +220,7 @@ public class MainPanel extends JPanel {
 				
 				//Check with database.
 				LoginData login = new LoginData(user,(new String(password1.getPassword())));
+				client.setUsername(user);
 				
 				try {
 					client.sendToServer(login);
