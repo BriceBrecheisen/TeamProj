@@ -272,6 +272,8 @@ public class MainPanel extends JPanel {
 		IP1.setBounds(400,125,150,30);
 		newuser.add(IP1);
 		
+		//Poop
+		
 		password2 = new JPasswordField();
 		password2.setBounds(170,125,150,30);
 		newuser.add(password2);
