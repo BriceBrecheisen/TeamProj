@@ -34,6 +34,11 @@ public class Game
 		waitingplayers = new ArrayList<Player>();
 	}
 	
+	public int getTurn()
+	{
+		return turn;
+	}
+	
 	public boolean isPlaying()
 	{
 		return isplaying;
@@ -47,11 +52,24 @@ public class Game
 			//If this is the first player, just add the dude to the list of players in the game.
 			if (players.isEmpty())
 			{
+				//Add player to game, but let them know that they have to wait for someone else to join.
+				players.add(p);
+				try {
+					server.getClients().get(0).sendToClient("alone");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				return;
+			}
+			
+			//If this is the second player, then we can start the game.
+			else if (players.size()==1)
+			{
 				players.add(p);
 				
-				//Give turn to the next player.
+				//Give turn to the first player, start game.
 				startRound();
-				
 				return;
 			}
 
@@ -73,7 +91,6 @@ public class Game
 				//If the program gets here, it means it couldn't find the player already existing. In that case, just add player to the
 				//arraylist of players.
 				players.add(p);
-				return;
 			}}
 		
 		//If game is ongoing, add the players to the waitlist if they are new, else update their moves.
@@ -129,6 +146,7 @@ public class Game
 		}
 		
 		//Else lets players know if they can play
+		//Freeze all the other players who's turn it isn't.
 		for (int i=0; i<players.size();i++)
 		{
 			if (players.get(i).getSeat() != turn)
@@ -143,6 +161,7 @@ public class Game
 			
 			else
 			{
+				//Let the player who's turn it is to make a move.
 				try {
 					server.getClients().get(i).sendToClient("go");
 				} catch (IOException e) {
@@ -157,9 +176,12 @@ public class Game
 	
 	public void startRound()
 	{
-		turn=2;
+		//Give turn to the first player.
+		turn=1;
+		//Set isplaying to true.
 		isplaying = true;
 		
+		//Tell players if it's their turn or not.
 		for (int i=0; i<players.size();i++)
 		{
 			if (players.get(i).getSeat() != turn)
@@ -205,6 +227,46 @@ public class Game
 		server.addWaitingClients();
 		
 		waitingplayers = null;
+		
+		//Let all players know who the winner is.
+		displayWinner();
+		
+		//Wait for 5 seconds.
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//Restart game
+		startRound();
+	}
+	
+	public void displayWinner()
+	{
+		//Add all money from pot to this player's chips.
+	}
+	
+	public void chipsUpdate()
+	{
+		//Check if anyone bet
+		for (int i=0; i<players.size();i++)
+		{
+			if (players.get(i).getMoves().getbet()>0)
+			{
+				//Substract the bet from all players chips
+				//Add these substractions to the pot.
+				for (int j=0; j<players.size();j++)
+				{
+					players.get(j).setChips(players.get(j).getChips()-players.get(i).getMoves().getbet());
+					pot += players.get(i).getMoves().getbet();
+				}
+				//Set the better's bet back to 0.
+				players.get(i).getMoves().setbet(0);
+			}
+		}
+		
 	}
 	
 	public Player getPlayer(long a)
@@ -223,7 +285,10 @@ public class Game
 	
 	public ArrayList<Player> getAllPlayers()
 	{
-		return players;
+		//Return only the players who have made a move.
+		ArrayList<Player> returnval=new ArrayList<Player>();
+		returnval.addAll(players.subList(0, turn-1));
+		return returnval;
 	}
 	
 	
@@ -258,9 +323,9 @@ public class Game
 		
 
 		// Initialize players
-		for (int i=0;i<numPlayers;i++){
+		/*for (int i=0;i<numPlayers;i++){
 			players.add(new Player());
-		}
+		}*/
 
 		//this gives our players cards, 2 to a player
 		for (int i=0;i<2;i++){

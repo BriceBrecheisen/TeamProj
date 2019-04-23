@@ -71,7 +71,7 @@ public class ChatServer extends AbstractServer
 			return "wait";
 		}
 
-		//Else the client has already been added before, return true.
+		//Else the client has already been added before, return playing.
 		else if ((clients.contains(p))&&(game.isPlaying()==true))
 		{
 			return "playing";
@@ -223,7 +223,7 @@ public class ChatServer extends AbstractServer
 							if (((Player)arg0).getMoves().getbet()>0)
 							{
 								data.betsetter(((Player)arg0).getMoves().getbet());
-								game.getPlayer(arg1.getId()).getMoves().setbet(0);
+								data.bettingPlayerSetter(((Player)arg0).getSeat());
 							}
 
 							//Let all the players know of the player's move.
@@ -288,6 +288,7 @@ public class ChatServer extends AbstractServer
 
 	public void letAllKnow()
 	{	
+		//Let everyone know of only the moves of all the players who have moved.
 		//First create the game data object, so that it can be sent to all players.
 		data.playersSetter(game.getAllPlayers());
 
@@ -302,6 +303,9 @@ public class ChatServer extends AbstractServer
 				System.out.println("Could not send data to player!");
 			}
 		}
+		
+		
+		//After sending move, clear turn player's move, so that the new one can then come in.
 
 		//Clear out game data to be reused for next round of moves by players.
 		resetGameData();

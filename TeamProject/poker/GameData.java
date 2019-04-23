@@ -7,6 +7,7 @@ public class GameData {
 	//Data fields.
 	private ArrayList<Player> players;
 	private int bet;
+	private int bettingplayer;
 	private String winnerinfo;
 	
 	public GameData()
@@ -14,6 +15,7 @@ public class GameData {
 		//Starting all the data fields.
 		players=new ArrayList<Player>();
 		bet=0;
+		bettingplayer=-1;
 		winnerinfo = "";
 	}
 	
@@ -47,5 +49,14 @@ public class GameData {
 		return bet;
 	}
 	
+	public int bettingPlayerGetter()
+	{
+		return bettingplayer;
+	}
+	
+	public void bettingPlayerSetter(int b)
+	{
+		bettingplayer = b;
+	}
 	
 }

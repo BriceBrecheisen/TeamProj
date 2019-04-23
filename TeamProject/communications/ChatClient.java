@@ -83,6 +83,13 @@ public class ChatClient extends AbstractClient
 				//mainpanel.freezePanel();
 				//When its not their turn just yet.
 			}
+			
+			//If they are the first player, and they have to wait for others to show up.
+			else if (((String)arg0).equals("alone"))
+			{
+				//mainpanel.alonePanel();
+				//When its not their turn just yet.
+			}
 		}
 
 		//If the server sends a GameData object

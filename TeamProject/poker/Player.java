@@ -10,12 +10,26 @@ public class Player {
     private Move move;
     private long id;
     private int seatno;
+    private int chips;
     
     //constructor
     public Player(){
     	//Starting the move object for the player.
     	move = new Move();
     	id = 0;
+    	
+    	//Every player will have a starting amount of 50000 dollars worth of chips. Alot.
+    	chips = 50000;
+    }
+    
+    public void setChips(int c)
+    {
+    	chips = c;
+    }
+    
+    public int getChips()
+    {
+    	return chips;
     }
     
     public void setID(long id)
