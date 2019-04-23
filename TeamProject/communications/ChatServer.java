@@ -396,6 +396,6 @@ public class ChatServer extends AbstractServer
 
 	protected void clientConnected(ConnectionToClient client) 
 	{
-		log.append("Player"+client.getId()+" connected!");
+		//log.append("Player"+client.getId()+" connected!");
 	}
 }

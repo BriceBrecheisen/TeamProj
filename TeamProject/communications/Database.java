@@ -105,8 +105,8 @@ public class Database
 	  //Creating user, i.e. inserting the users information into the user table.
 	  //Starting the query string
 	  //Adding the users information into the query string.
-	  String query = "INSERT into usertable values('"+user.getUsername()
-	  +"',aes_encrypt('"+user.getPassword()+"','key'),"+user.getID()+");";
+	  String query = "INSERT into poker_users values('"+user.getUsername()
+	  +"',aes_encrypt('"+user.getPassword()+"','key');";
 	  
 	  //Executing the query as a DML
 	  try {
@@ -124,7 +124,7 @@ public class Database
 	  //Checking if the user already exists in the database
 	  //Starting the query string
 	  //Adding user's user-name into the query so that it can be checked for.
-	  String query = "SELECT username,aes_decrypt(password,'key') FROM usertable WHERE username='"+user.getUsername()+"';";
+	  String query = "SELECT username,aes_decrypt(password,'key') FROM poker_users WHERE username='"+user.getUsername()+"';";
 	  
 	  //Executing the query, and catching the results in an ArrayList object.
 	  ArrayList<String> result = query(query);
@@ -146,7 +146,7 @@ public class Database
 	//Checking if the user already exists in the database
 	  //Starting the query string
 	  //Adding user's user-name into the query so that it can be checked for.
-	  String query = "SELECT username FROM usertable WHERE username='"+user.getUsername()+"';";
+	  String query = "SELECT username FROM poker_users WHERE username='"+user.getUsername()+"';";
 	  
 	  //Executing the query, and catching the results in an ArrayList object.
 	  ArrayList<String> result = query(query);

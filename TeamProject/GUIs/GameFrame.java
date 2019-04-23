@@ -6,7 +6,7 @@ import communications.*;
 @SuppressWarnings("serial")
 public class GameFrame extends JFrame {
 	
-	private ChatClient client;
+	//private ChatClient client;
 	
 	public GameFrame() {
 	}

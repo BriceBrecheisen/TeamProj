@@ -108,6 +108,11 @@ public class MainPanel extends JPanel {
 		setLayout(null);
 		
 		user = new String();
+		self = this;
+		
+		//Set up client.
+		client = new ChatClient();
+		client.setMainPanel(self);
 		
 		
 		loginpanel = new JPanel();
@@ -144,8 +149,6 @@ public class MainPanel extends JPanel {
 		gamegui.setBackground(Color.RED);
 		add(gamegui);
 		gamegui.setLayout(null);
-		
-		self = this;
 		
 		loginPanel();
 	}
@@ -204,8 +207,16 @@ public class MainPanel extends JPanel {
 				//if statements to check database go here
 				String porky = port1.getText();
 				int porty = Integer.parseInt(porky);
-				client = new ChatClient(IP1.getText(),porty);
-				client.setMainPanel(self);
+				client.setPort(porty);
+				client.setHost(IP1.getText());
+				
+				try {
+					client.openConnection();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
 				
 				//Check with database.
 				LoginData login = new LoginData(user,(new String(password1.getPassword())));
@@ -311,6 +322,18 @@ public class MainPanel extends JPanel {
 			public void mouseClicked(MouseEvent arg0) {
 				if(new String(password2.getPassword()).equals(new String(password3.getPassword())))
 				{
+					String porky = port1.getText();
+					int porty = Integer.parseInt(porky);
+					
+					client.setPort(porty);
+					client.setHost(IP1.getText());
+					
+					try {
+						client.openConnection();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					
 					//Check with database
 					//Check with database.
@@ -355,6 +378,7 @@ public class MainPanel extends JPanel {
 	
 	public void homePanel(String bob)
 	{
+		loginpanel.setVisible(false);
 		home.setVisible(true);
 
 		logout = new JButton("Logout");

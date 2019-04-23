@@ -20,7 +20,11 @@ import javax.swing.JTextField;
 //This is the server gui.
 public class ServerGUI extends JFrame {
 	
-	 //Declaring all the variables to be used for the GUI.
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	//Declaring all the variables to be used for the GUI.
 	  private JLabel status;
 	  private String[] labels = {"Status:","Port # :", "Timeout: ", "Server Log Below:"};
 	  private JTextField[] textFields;
