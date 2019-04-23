@@ -1,6 +1,7 @@
 package communications;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -15,12 +16,14 @@ public class ChatClient extends AbstractClient
 	public Player player;
 	public MainPanel mainpanel;
 	public String username;
+	public ArrayList<Player> players;
 
 	public ChatClient()
 	{
 		super("localhost",8300);
 		data = new GameData();
 		player = new Player();
+		players = new ArrayList<Player>();
 	}
 	
 	public String getUsername()
@@ -38,6 +41,7 @@ public class ChatClient extends AbstractClient
 		super(ip,port);
 		data = new GameData();
 		player = new Player();
+		players = new ArrayList<Player>();
 	}
 
 	public void setMainPanel(MainPanel m)
@@ -129,7 +133,9 @@ public class ChatClient extends AbstractClient
 			//Set the players seat number and id number
 			player.setID(temp.getId());
 			player.setSeat(temp.getSeat());
+			players.add(player);
 			mainpanel.setplay(player);
+			data.playersSetter(players);
 			
 			try {
 				mainpanel.gamePanel();

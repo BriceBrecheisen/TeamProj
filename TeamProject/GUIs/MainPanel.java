@@ -680,8 +680,11 @@ public class MainPanel extends JPanel {
 	
 	public void setVis()
 	{
-		int hum = player.getSeat();
+		ArrayList<Player> goal = client.data.playerGetter();
 		
+		for(int i = 0; i<goal.size();i++)
+		{
+			int hum = goal.get(i).getSeat();
 		if (hum == 1)
 		{
 			player1.setVisible(true);
@@ -721,6 +724,7 @@ public class MainPanel extends JPanel {
 			play5.setText(client.getUsername());
 			play5deck1.setVisible(true);
 			play5deck2.setVisible(true);
+		}
 		}
 		
 	}
