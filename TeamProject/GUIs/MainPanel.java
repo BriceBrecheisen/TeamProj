@@ -414,7 +414,13 @@ public class MainPanel extends JPanel {
 			public void mouseClicked(MouseEvent arg0) {
 				home.setVisible(false);
 				try {
-					gamePanel();
+					//Send this player's data to the server.
+					Player player = new Player();
+					player.setUsername(user);
+					
+					client.openConnection();
+					client.sendToServer(player);
+					//gamePanel();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -605,6 +611,14 @@ public class MainPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				ready.setVisible(false);
+				
+				//Send the ready button signal to the server.
+				try {
+					client.sendToServer("1");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				goPanel();
 			}
 		});
@@ -624,6 +638,16 @@ public class MainPanel extends JPanel {
 		
 		gamegui.repaint();
 		
+	}
+	
+	public void setReadyVisible()
+	{
+		ready.setEnabled(true);
+	}
+	
+	public void setReadyInvisible()
+	{
+		ready.setEnabled(false);
 	}
 	
 	public void waitPanel()

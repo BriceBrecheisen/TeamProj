@@ -17,6 +17,7 @@ public class ChatServer extends AbstractServer
 	private Database database;
 	private Game game;
 	private GameData data;
+	private int readyCount;
 	private ArrayList<ConnectionToClient> clients;
 	private ArrayList<ConnectionToClient> waitingclients;
 
@@ -26,9 +27,10 @@ public class ChatServer extends AbstractServer
 		super(8300);
 		super.setTimeout(500);
 		database = new Database();
-		//game = new Game();
-		//data = new GameData();
+		game = new Game();
+		data = new GameData();
 		clients = new ArrayList<ConnectionToClient>();
+		readyCount = 0;
 	}
 
 	public String setClients(ConnectionToClient p)
@@ -90,6 +92,11 @@ public class ChatServer extends AbstractServer
 	{
 		super(port);
 	}
+	
+	public void setReadyCount(int r)
+	{
+		readyCount = r;
+	}
 
 	public void setDatabase(Database database)
 	{
@@ -131,7 +138,23 @@ public class ChatServer extends AbstractServer
 
 	@Override
 	protected void handleMessageFromClient(Object arg0, ConnectionToClient arg1)
-	{
+	{		//If the user sends a signal that they are ready, update the ready count
+		if (arg0 instanceof String)
+		{
+			if (((String)arg0).equals("1"))
+			{
+				readyCount++;
+
+				//Check if readyCount is equal to the number of players available.
+				//If so, start game.
+				if (readyCount >= clients.size())
+				{
+					log.append("\nNew game started!");
+					game.startRound();
+				}
+
+				//Else do nothing and wait my friend.
+			}}
 		// TODO Auto-generated method stub
 		//System.out.println("Message from Client" + arg0.toString() + arg1.toString());
 		//log.append("Message from Client" + arg0.toString() + arg1.toString() + "\n");
@@ -221,7 +244,7 @@ public class ChatServer extends AbstractServer
 							game.setPlayers((Player)arg0);
 							
 							//Update Server GUI
-							log.append("Player: "+arg1.getId()+" moved: " +((Player)arg0).getMoves().getMove());
+							log.append("Player: "+((Player)arg0).getUsername()+" moved: " +((Player)arg0).getMoves().getMove());
 							
 							//Deal with the player's moves
 							game.makinMoves();
@@ -251,7 +274,7 @@ public class ChatServer extends AbstractServer
 						//Add the player data to the player waitlist.
 						game.setPlayers((Player)arg0);
 						//Update Server GUI
-						log.append("\n"+"Player: "+arg1.getId()+" is waiting!");
+						log.append("\n"+"Player: "+((Player)arg0).getUsername()+" is waiting!");
 
 						//Tell client to wait.
 						try {
@@ -275,7 +298,7 @@ public class ChatServer extends AbstractServer
 						game.setPlayers(temp);
 						
 						//Update Server GUI
-						log.append("\n"+"Player: "+arg1.getId()+" got added to game!");
+						log.append("\n"+"Player: "+((Player)arg0).getUsername()+" got added to game!");
 
 						//Send id and seat number.
 						try {

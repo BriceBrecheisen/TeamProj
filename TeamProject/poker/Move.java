@@ -1,7 +1,13 @@
 package poker;
 
-public class Move {
+import java.io.Serializable;
+
+public class Move implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int bet;
 	private boolean check,call,fold,yesbet;
 	

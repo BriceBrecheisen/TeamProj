@@ -1,5 +1,7 @@
 package communications;
 
+import java.io.IOException;
+
 import javax.swing.JOptionPane;
 
 
@@ -110,6 +112,12 @@ public class ChatClient extends AbstractClient
 				//mainpanel.alonePanel();
 				//When its not their turn just yet.
 			}
+			
+			else if (((String)arg0).equals("Ready"))
+			{
+				//Reset their ready buttons.
+				mainpanel.setReadyVisible();
+			}
 		}
 
 		//If the server sends a GameData object
@@ -121,7 +129,13 @@ public class ChatClient extends AbstractClient
 			//Set the players seat number and id number
 			player.setID(temp.getId());
 			player.setSeat(temp.getSeat());
-
+			
+			try {
+				mainpanel.gamePanel();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		//If the server sends card information

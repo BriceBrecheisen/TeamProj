@@ -16,6 +16,7 @@ public class Player implements Serializable{
     private long id;
     private int seatno;
     private int chips;
+    private String username;
     
     //constructor
     public Player(){
@@ -25,6 +26,8 @@ public class Player implements Serializable{
     	
     	//Every player will have a starting amount of 10000 dollars worth of chips. Alot.
     	chips = 10000;
+    	
+    	username = "";
     }
     
     public void setChips(int c)
@@ -145,6 +148,16 @@ public class Player implements Serializable{
     public boolean fold()
     {
     	return true;
+    }
+    
+    public String getUsername()
+    {
+    	return username;
+    }
+    
+    public void setUsername(String u)
+    {
+    	username = u;
     }
     
     
