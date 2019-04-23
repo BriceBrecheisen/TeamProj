@@ -3,13 +3,63 @@ package poker;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player {
-    private Card[] holeCards = new Card[2];
-
+public class Player implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Card[] holeCards = new Card[2];
+    private Move move;
+    private long id;
+    private int seatno;
+    private int chips;
+    
     //constructor
     public Player(){
+    	//Starting the move object for the player.
+    	move = new Move();
+    	id = 0;
+    	
+    	//Every player will have a starting amount of 10000 dollars worth of chips. Alot.
+    	chips = 10000;
+    }
+    
+    public void setChips(int c)
+    {
+    	chips = c;
+    }
+    
+    public int getChips()
+    {
+    	return chips;
+    }
+    
+    public void setID(long id)
+    {
+    	this.id = id;
+    }
+    
+    public long getID()
+    {
+    	return id;
+    }
+    
+    public void setSeat(int s)
+    {
+    	this.seatno = s;
+    }
+    
+    public int getSeat()
+    {
+    	return seatno;
+    }
+    
+    public Move getMoves()
+    {
+    	return move;
     }
 
     public Player(Card card1, Card card2){
@@ -20,6 +70,13 @@ public class Player {
     //methods
     public void setCard(Card card, int cardNum){
         holeCards[cardNum] = card;
+    }
+    
+    //Setting the player's hole cards.
+    public void setHoleCards(ArrayList<Card> c)
+    {
+    	for (int i=0; i<2;i++)
+    		holeCards[i] = c.get(i);
     }
 
     public Card getCard(int cardNum){
@@ -45,7 +102,7 @@ public class Player {
 		String userInput = "";
 
 		// get bet from player
-		System.out.println("Enter your action(bet,fold,check): ");
+		System.out.println("Select your action: ");
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
 		try { 
