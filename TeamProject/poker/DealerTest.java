@@ -49,7 +49,7 @@ public class DealerTest {
 
 		Card test = d.getcommCard(0);
 
-		assertNotNull("Check test", test);
+		assertNotNull("Check test card", test);
 	}
 
 	@Test
