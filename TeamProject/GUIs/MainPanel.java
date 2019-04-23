@@ -1,3 +1,5 @@
+//This is the mainpanel. Horribly coded.
+
 package GUIs;
 
 import communications.*;
