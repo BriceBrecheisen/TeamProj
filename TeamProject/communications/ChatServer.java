@@ -309,6 +309,9 @@ public class ChatServer extends AbstractServer
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
+						
+						//Let all players know of new data.
+						letAllKnow();
 					}
 				}
 
@@ -424,6 +427,7 @@ public class ChatServer extends AbstractServer
 		//log.append("Player"+client.getId()+" connected!");
 	}
 	
+	@Override
 	protected void clientDisconnected(ConnectionToClient client)
 	{
 		log.append("\nPlayer "+ game.getPlayer(client.getId())+ " just disconnected!");

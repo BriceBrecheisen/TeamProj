@@ -106,7 +106,7 @@ public class ChatClient extends AbstractClient
 			}
 			else if (((String)arg0).equals("Freeze!"))
 			{
-				//mainpanel.freezePanel();
+				mainpanel.freezePanel();
 				//When its not their turn just yet.
 			}
 			
@@ -122,6 +122,14 @@ public class ChatClient extends AbstractClient
 				//Reset their ready buttons.
 				mainpanel.setReadyVisible();
 			}
+			
+			else if (((String)arg0).contains("Winner info:"))
+			{
+				//Display winner info on panel
+				//mainpanel.setReadyVisible();
+			}
+			
+			
 		}
 
 		//If the server sends a GameData object
@@ -154,15 +162,34 @@ public class ChatClient extends AbstractClient
 			
 			//If the server sent two cards, its this player's hole cards.
 			if (cards.getCards().size()==2)
+			{
+				//Set players cards
 				player.setHoleCards(cards.getCards());
-			
+				mainpanel.displayCards();
+			}
 			//If the server sent three cards, its the dealer's first three community cards
-			else if (cards.getCards().size()==3);
+			else if (cards.getCards().size()==3)
+			{
 				//Set Dealers community cards. Remove ; above.
+				mainpanel.cardsSetter(cards);
+				mainpanel.displayCards();
+			}
 			
 			//If the server sent one card, its the dealer's community cards after first three.
-			else if (cards.getCards().size()==1);
+			else if (cards.getCards().size()==1)
+			{
 				//Set Dealers community cards. Remove ; above.
+				mainpanel.cardsSetter(cards);
+				mainpanel.displayCards();
+			}
+		}
+		
+		else if (arg0 instanceof GameData)
+		{
+			GameData update = ((GameData)arg0);
+			
+			//Now update the client GUI
+			
 		}
 
 	}
