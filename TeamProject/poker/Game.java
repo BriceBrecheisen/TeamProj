@@ -13,7 +13,7 @@ public class Game
 {
 	// variables
 	private Dealer deck = new Dealer();
-	private Game game = new Game();
+	//private Game game = new Game();
 	//private int numPlayers = 0;
 	private int cardCounter = 0;
 	private int commCounter = 0;

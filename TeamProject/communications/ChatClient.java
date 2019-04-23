@@ -1,5 +1,7 @@
 package communications;
 
+import javax.swing.JOptionPane;
+
 import GUIs.MainPanel;
 import ocsf.client.AbstractClient;
 import poker.*;
@@ -9,6 +11,7 @@ public class ChatClient extends AbstractClient
 	public GameData data;
 	public Player player;
 	public MainPanel mainpanel;
+	public String username;
 
 	public ChatClient()
 	{
@@ -40,25 +43,31 @@ public class ChatClient extends AbstractClient
 		{
 			if (((String)arg0).equals("truth"))
 			{
-				//logincontrol.loginSuccess();
+				//If login worked, then take user to main-panel.
+				mainpanel.homePanel(username);
 			}
 
 			//If server returns falsehood, it means that the user doesnt exist.
 			else if (((String)arg0).equals("falsehood"))
 			{
-				//logincontrol.displayError("Incorrect username/password combination!");
+				JOptionPane.showMessageDialog(null,"Error, your credentials do not exist!");
+				mainpanel.loginPanel();
 			}
 
 			//If server returns exists, it means that a user has been trying to make a username/pass combo, and it already exists.
 			else if (((String)arg0).equals("exists"))
 			{
-				//createcontrol.displayError("Username selected already exists my friend!");
+				JOptionPane.showMessageDialog(null,"Error, this username exists my friend!");
+				//Take user back to create account panel.
+				mainpanel.newuserPanel();
 			}
 
 			//If server returns, it means that a new username and password was successfully made.
 			else if (((String)arg0).equals("done"))
 			{
-				// createcontrol.createAccountSuccess();
+				JOptionPane.showMessageDialog(null,"Success, new user account made! Go ahead and log in my friend!");
+				//Take user back to login panel.
+				mainpanel.loginPanel();
 			}
 
 			//If the server returns waiting, then the player has to wait to start playing.

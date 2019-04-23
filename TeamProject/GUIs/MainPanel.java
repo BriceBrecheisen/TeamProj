@@ -98,6 +98,8 @@ public class MainPanel extends JPanel {
 	
 	private ArrayList<String> turd;
 	
+	private MainPanel self;
+	
 	public MainPanel() {
 		setLayout(null);
 		
@@ -138,6 +140,8 @@ public class MainPanel extends JPanel {
 		gamegui.setBackground(Color.RED);
 		add(gamegui);
 		gamegui.setLayout(null);
+		
+		self = this;
 		
 		loginPanel();
 	}
@@ -187,6 +191,8 @@ public class MainPanel extends JPanel {
 		loginpanel.add(loginmainlabel);
 		
 		LoginButton = new JButton("Login");
+		
+		
 		LoginButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -195,12 +201,22 @@ public class MainPanel extends JPanel {
 				String porky = port1.getText();
 				int porty = Integer.parseInt(porky);
 				client = new ChatClient(IP1.getText(),porty);
+				client.setMainPanel(self);
+				
+				//Check with database.
+				LoginData login = new LoginData(user,(new String(password1.getPassword())));
+				
+				try {
+					client.sendToServer(login);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 				port1.setText("");
 				IP1.setText("");
 				usertext.setText("");
 				password1.setText("");
-				loginpanel.setVisible(false);
-				homePanel(user);
 			}
 		});
 		LoginButton.setBounds(315, 170, 150, 30);
@@ -291,11 +307,21 @@ public class MainPanel extends JPanel {
 			public void mouseClicked(MouseEvent arg0) {
 				if(new String(password2.getPassword()).equals(new String(password3.getPassword())))
 				{
+					
+					//Check with database
+					//Check with database.
+					CreateAccountData create = new CreateAccountData(newusertext.getText(),(new String(password1.getPassword())));
+					
+					try {
+						client.sendToServer(create);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
 					password2.setText("");
 					password3.setText("");
-					newusertext.setText("");
-					newuser.setVisible(false);
-					loginPanel();
+					newusertext.setText("");					
 				}
 				
 				else

@@ -156,6 +156,7 @@ public class ServerGUI extends JFrame {
 	    			  } catch (IOException e1) {
 	    				  // TODO Auto-generated catch block
 	    				  e1.printStackTrace();
+	    				  serverLog.append("Couldn't connect to server!");
 	    			  }}
 	    		  else
 	    			  serverLog.append("\nServer already listening!");

@@ -26,8 +26,8 @@ public class ChatServer extends AbstractServer
 		super(8300);
 		super.setTimeout(500);
 		database = new Database();
-		game = new Game();
-		data = new GameData();
+		//game = new Game();
+		//data = new GameData();
 		clients = new ArrayList<ConnectionToClient>();
 	}
 
@@ -149,6 +149,7 @@ public class ChatServer extends AbstractServer
 			{
 				try {
 					arg1.sendToClient("truth");
+					log.append(loginData.getUsername() + " is logged in!");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
