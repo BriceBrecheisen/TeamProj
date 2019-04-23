@@ -30,7 +30,9 @@ public class ChatServer extends AbstractServer
 		game = new Game();
 		data = new GameData();
 		clients = new ArrayList<ConnectionToClient>();
+		waitingclients = new ArrayList<ConnectionToClient>();
 		readyCount = 0;
+		game.setServer(this);
 	}
 
 	public String setClients(ConnectionToClient p)
@@ -147,7 +149,7 @@ public class ChatServer extends AbstractServer
 
 				//Check if readyCount is equal to the number of players available.
 				//If so, start game.
-				if (readyCount >= clients.size())
+				if ((readyCount>=2) && readyCount==clients.size())
 				{
 					log.append("\nNew game started!");
 					game.startRound();
@@ -290,7 +292,7 @@ public class ChatServer extends AbstractServer
 				else if (!game.isPlaying())
 				{
 					//If they have been added successfully, they will be sent their id and seat number.
-					if(setClients(arg1).equals("Added"))
+					if(setClients(arg1).equals("added"))
 					{
 						Player temp = (Player)arg0;
 						temp.setSeat(clients.size());
@@ -420,5 +422,10 @@ public class ChatServer extends AbstractServer
 	protected void clientConnected(ConnectionToClient client) 
 	{
 		//log.append("Player"+client.getId()+" connected!");
+	}
+	
+	protected void clientDisconnected(ConnectionToClient client)
+	{
+		log.append("\nPlayer "+ game.getPlayer(client.getId())+ " just disconnected!");
 	}
 }
