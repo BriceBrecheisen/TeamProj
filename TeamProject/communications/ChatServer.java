@@ -193,6 +193,7 @@ public class ChatServer extends AbstractServer
 
 				try {
 					arg1.sendToClient("done");
+					log.append(createAccData.getUsername() + " has created an account!");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

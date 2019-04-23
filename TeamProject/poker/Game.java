@@ -378,12 +378,12 @@ public class Game
 		//If the player bet
 		if (dude.getMoves().getbet()>0)
 		//Update everyone's chips.
-			game.chipsUpdate();
+			chipsUpdate();
 		
 		//If the player call-ed
 		else if (dude.getMoves().getMove()=="call")
 			//Update everyone's chips.
-			game.chipsUpdate();
+			chipsUpdate();
 		
 		//If the player folded
 		else if (dude.getMoves().getMove()=="fold")
@@ -740,7 +740,7 @@ public class Game
 =======
 	}*/
 //}
->>>>>>> branch 'master' of https://github.com/BriceBrecheisen/TeamProj.git
+//>>>>>>> branch 'master' of https://github.com/BriceBrecheisen/TeamProj.git
 
 
 
