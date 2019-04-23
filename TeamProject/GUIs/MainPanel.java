@@ -4,12 +4,16 @@ import communications.*;
 import poker.*;
 import java.awt.BorderLayout;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.awt.Font;
+import java.awt.Image;
 
 public class MainPanel extends JPanel {
 	
@@ -60,6 +64,21 @@ public class MainPanel extends JPanel {
 	private JLabel play4;
 	private JLabel play5;
 	private JLabel dealdeck;
+	private JLabel commdeck1;
+	private JLabel commdeck2;
+	private JLabel commdeck3;
+	private JLabel commdeck4;
+	private JLabel commdeck5;
+	private JLabel play1deck1;
+	private JLabel play1deck2;
+	private JLabel play2deck1;
+	private JLabel play2deck2;
+	private JLabel play3deck1;
+	private JLabel play3deck2;
+	private JLabel play4deck1;
+	private JLabel play4deck2;
+	private JLabel play5deck1;
+	private JLabel play5deck2;
 	
 	
 	
@@ -296,14 +315,19 @@ public class MainPanel extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				home.setVisible(false);
-				gamePanel();
+				try {
+					gamePanel();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 		jointable.setBounds(450,300,300,50);
 		home.add(jointable);
 	}
 	
-	public void gamePanel()
+	public void gamePanel() throws IOException
 	{
 		//this is just a fake comment
 		waiting.setVisible(false);
@@ -312,12 +336,87 @@ public class MainPanel extends JPanel {
 		dealer = new JLabel();
 		dealer.setIcon(new ImageIcon(MainPanel.class.getResource("/GUIs/person.png")));
 		dealer.setBounds(540,10,128,128);
-		gamegui.add(dealer);
+		gamegui.add(dealer);		
 		
 		dealdeck = new JLabel();
-		dealdeck.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/s11.bmp")));
+		dealdeck.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		dealdeck.setBounds(540,140,71,100);
 		gamegui.add(dealdeck);
+		
+		commdeck1 = new JLabel();
+		commdeck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		commdeck1.setBounds(425,315,71,100);
+		gamegui.add(commdeck1);
+		
+		commdeck2 = new JLabel();
+		commdeck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		commdeck2.setBounds(500,315,71,100);
+		gamegui.add(commdeck2);
+		
+		commdeck3 = new JLabel();
+		commdeck3.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		commdeck3.setBounds(575,315,71,100);
+		gamegui.add(commdeck3);
+		
+		commdeck4 = new JLabel();
+		commdeck4.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		commdeck4.setBounds(650,315,71,100);
+		gamegui.add(commdeck4);
+		
+		commdeck5 = new JLabel();
+		commdeck5.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		commdeck5.setBounds(725,315,71,100);
+		gamegui.add(commdeck5);
+		
+		play1deck1 = new JLabel();
+		play1deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		play1deck1.setBounds(10,160,71,100);
+		gamegui.add(play1deck1);
+		
+		play1deck2 = new JLabel();
+		play1deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		play1deck2.setBounds(90,160,71,100);
+		gamegui.add(play1deck2);
+		
+		play2deck1 = new JLabel();
+		play2deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		play2deck1.setBounds(10,540,71,100);
+		gamegui.add(play2deck1);
+		
+		play2deck2 = new JLabel();
+		play2deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		play2deck2.setBounds(90,540,71,100);
+		gamegui.add(play2deck2);
+		
+		play3deck1 = new JLabel();
+		play3deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		play3deck1.setBounds(540,500,71,100);
+		gamegui.add(play3deck1);
+		
+		play3deck2 = new JLabel();
+		play3deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		play3deck2.setBounds(620,500,71,100);
+		gamegui.add(play3deck2);
+		
+		play4deck1 = new JLabel();
+		play4deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		play4deck1.setBounds(1030,540,71,100);
+		gamegui.add(play4deck1);
+		
+		play4deck2 = new JLabel();
+		play4deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		play4deck2.setBounds(1110,540,71,100);
+		gamegui.add(play4deck2);
+		
+		play5deck1 = new JLabel();
+		play5deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		play5deck1.setBounds(1030,160,71,100);
+		gamegui.add(play5deck1);
+		
+		play5deck2 = new JLabel();
+		play5deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
+		play5deck2.setBounds(1110,160,71,100);
+		gamegui.add(play5deck2);
 		
 		dealer1 = new JLabel("Dealer");
 		dealer1.setBounds(620,140,50,25);
