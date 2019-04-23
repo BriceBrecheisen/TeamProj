@@ -35,6 +35,7 @@ public class Game
 		//numPlayers = game.getNumberOfPlayers();
 		players = new ArrayList<Player>();
 		waitingplayers = new ArrayList<Player>();
+		isplaying = false;
 	}
 	
 	public int getBet()
