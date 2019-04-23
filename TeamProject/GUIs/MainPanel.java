@@ -94,7 +94,13 @@ public class MainPanel extends JPanel {
 	private JButton moveit;
 	private JButton back;
 	
-	private JPanel waiting;
+	private JLabel move1;
+	private JLabel move2;
+	private JLabel move3;
+	private JLabel move4;
+	private JLabel move5;
+	
+	private JPanel freezepanel;
 	private JLabel waitplease;
 	
 	private ChatClient client;
@@ -140,12 +146,12 @@ public class MainPanel extends JPanel {
 		home.setLayout(null);
 		home.setVisible(false);
 		
-		waiting = new JPanel();
-		waiting.setVisible(false);
-		waiting.setBounds(0,0,1200,800);
-		waiting.setBackground(Color.BLACK);
-		add(waiting);
-		waiting.setLayout(null);
+		freezepanel = new JPanel();
+		freezepanel.setVisible(false);
+		freezepanel.setBounds(165,535,350,170);
+		freezepanel.setBackground(Color.RED);
+		add(freezepanel);
+		freezepanel.setLayout(null);
 		
 		gamegui = new JPanel();
 		gamegui.setVisible(false);
@@ -613,6 +619,31 @@ public class MainPanel extends JPanel {
 		play5.setVisible(false);
 		gamegui.add(play5);
 		
+		move1 = new JLabel();
+		move1.setBounds(10,270,100,25);
+		gamegui.add(move1);
+		move1.setVisible(false);
+		
+		move2 = new JLabel();
+		move2.setBounds(10,550,100,25);
+		gamegui.add(move2);
+		move2.setVisible(false);
+		
+		move3 = new JLabel();
+		move3.setBounds(540,490,100,25);
+		gamegui.add(move3);
+		move3.setVisible(false);
+		
+		move4 = new JLabel();
+		move4.setBounds(1030,550,100,25);
+		gamegui.add(move4);
+		move4.setVisible(false);
+		
+		move5 = new JLabel();
+		move5.setBounds(1030,270,100,25);
+		gamegui.add(move5);
+		move5.setVisible(false);
+		
 		setVis();
 				
 		ready = new JButton("Ready!");
@@ -654,12 +685,59 @@ public class MainPanel extends JPanel {
 		ready.setEnabled(true);
 	}
 	
+	public void update()
+	{
+ArrayList<Player> goal = client.data.playerGetter();
+		
+		for(int i = 0; i<goal.size();i++)
+		{
+			int hum = goal.get(i).getSeat();
+		if (hum == 1)
+		{
+	//		move1.setText();
+		}
+		else if (hum == 2)
+		{
+			player2.setVisible(true);
+			play2.setVisible(true);
+			play2.setText(client.getUsername());
+			play2deck1.setVisible(true);
+			play2deck2.setVisible(true);
+		}
+		else if (hum == 3)
+		{
+			player3.setVisible(true);
+			play3.setVisible(true);
+			play3.setText(client.getUsername());
+			play3deck1.setVisible(true);
+			play3deck2.setVisible(true);
+		}
+		else if (hum == 4)
+		{
+			player4.setVisible(true);
+			play4.setVisible(true);
+			play4.setText(client.getUsername());
+			play4deck1.setVisible(true);
+			play4deck2.setVisible(true);
+		}
+		else if (hum == 5)
+		{
+			player5.setVisible(true);
+			play5.setVisible(true);
+			play5.setText(client.getUsername());
+			play5deck1.setVisible(true);
+			play5deck2.setVisible(true);
+		}
+		}
+		
+	}
+	
 	public void setReadyInvisible()
 	{
 		ready.setEnabled(false);
 	}
 	
-	public void waitPanel()
+	/*public void waitPanel()
 	{
 		home.setVisible(false);
 		gamegui.setVisible(false);
@@ -670,7 +748,7 @@ public class MainPanel extends JPanel {
 		waitplease.setBounds(300, 300, 700, 300);
 		waitplease.setForeground(Color.WHITE);
 		waiting.add(waitplease);
-	}
+	}*/
 	
 	public void setplay(Player players)
 	{
@@ -736,11 +814,13 @@ public class MainPanel extends JPanel {
 	
 	public void freezePanel()
 	{
-		
+		freezepanel.setVisible(false);
 	}
 	
 	public void goPanel()
 	{
+		freezepanel.setVisible(true);
+		
 		ArrayList<String> moves = new ArrayList<String>(4);
 		moves.add("Call");
 		moves.add("Bet");
@@ -755,7 +835,7 @@ public class MainPanel extends JPanel {
 			rdbtnRb.setBounds(170, 540+deltaY, 100, 25);
 			rdbtnRb.setActionCommand(s);
 			rdbtnRb.setVisible(true);
-			gamegui.add(rdbtnRb);
+			freezepanel.add(rdbtnRb);
 			deltaY += 30;
 		}
 		
@@ -766,19 +846,12 @@ public class MainPanel extends JPanel {
 		slider.setPaintTicks(true);
 		slider.setMajorTickSpacing(2500);
 		slider.setPaintLabels(true);
-		if(buttonGroup.getSelection().getActionCommand().toString().equals("Bet"))
-		{
-			slider.setVisible(true);
-		}
-		else
-		{
-			slider.setVisible(false);
-		}
-		gamegui.add(slider);
+		slider.setVisible(true);
+		freezepanel.add(slider);
 		
 		moveit = new JButton("Move");
 		moveit.setBounds(170,675,100,25);
-		gamegui.add(moveit);
+		freezepanel.add(moveit);
 		moveit.setVisible(true);
 		
 		
@@ -876,7 +949,7 @@ public class MainPanel extends JPanel {
         {
         	commdeck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(0))));
         	commdeck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(1))));
-        	commdeck3.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(1))));
+        	commdeck3.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(2))));
         }
         
         else if(card.size()==2)
@@ -910,7 +983,7 @@ public class MainPanel extends JPanel {
         	
         }
         
-        else if(card.size()==0)
+        else if(card.size()==1)
         {
         	ImageIcon image = new ImageIcon("/cardsimages/back.bmp");
         	if(commdeck4.getIcon().equals(image))
