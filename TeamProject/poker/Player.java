@@ -23,8 +23,8 @@ public class Player implements Serializable{
     	move = new Move();
     	id = 0;
     	
-    	//Every player will have a starting amount of 50000 dollars worth of chips. Alot.
-    	chips = 50000;
+    	//Every player will have a starting amount of 10000 dollars worth of chips. Alot.
+    	chips = 10000;
     }
     
     public void setChips(int c)
