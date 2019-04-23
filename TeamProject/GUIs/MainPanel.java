@@ -1,4 +1,5 @@
 //This is the mainpanel. Horribly coded.
+//MainPanel
 
 package GUIs;
 
