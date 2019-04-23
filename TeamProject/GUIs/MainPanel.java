@@ -22,6 +22,8 @@ import java.awt.Image;
 
 public class MainPanel extends JPanel {
 	
+	public ArrayList<Player> players;
+
 	private JPanel loginpanel;
 	private JTextField usertext;
 	private JPasswordField password1;
@@ -86,6 +88,7 @@ public class MainPanel extends JPanel {
 	private JLabel play4deck2;
 	private JLabel play5deck1;
 	private JLabel play5deck2;
+	private JTextArea textArea;
 	
 	private final ButtonGroup buttonGroup = new ButtonGroup();
 	private int deltaY = 0;
@@ -455,7 +458,6 @@ public class MainPanel extends JPanel {
 	public void gamePanel() throws IOException
 	{
 		//this is just a fake comment
-		//waiting.setVisible(false);
 		home.setVisible(false);
 		gamegui.setVisible(true);
 
@@ -649,6 +651,8 @@ public class MainPanel extends JPanel {
 		gamegui.add(move5);
 		move5.setVisible(false);
 		
+		textArea = new JTextArea();
+		
 		setVis();
 				
 		ready = new JButton("Ready!");
@@ -692,46 +696,31 @@ public class MainPanel extends JPanel {
 	
 	public void update()
 	{
-ArrayList<Player> goal = client.data.playerGetter();
+		ArrayList<Player> goal = new ArrayList<Player>(client.data.playerGetter());
 		
 		for(int i = 0; i<goal.size();i++)
 		{
+			String tony = goal.get(i).getMoves().getMove();
 			int hum = goal.get(i).getSeat();
 		if (hum == 1)
 		{
-	//		move1.setText();
+			move1.setText(tony);
 		}
 		else if (hum == 2)
 		{
-			player2.setVisible(true);
-			play2.setVisible(true);
-			play2.setText(client.getUsername());
-			play2deck1.setVisible(true);
-			play2deck2.setVisible(true);
+			move2.setText(tony);
 		}
 		else if (hum == 3)
 		{
-			player3.setVisible(true);
-			play3.setVisible(true);
-			play3.setText(client.getUsername());
-			play3deck1.setVisible(true);
-			play3deck2.setVisible(true);
+			move3.setText(tony);
 		}
 		else if (hum == 4)
 		{
-			player4.setVisible(true);
-			play4.setVisible(true);
-			play4.setText(client.getUsername());
-			play4deck1.setVisible(true);
-			play4deck2.setVisible(true);
+			move4.setText(tony);
 		}
 		else if (hum == 5)
 		{
-			player5.setVisible(true);
-			play5.setVisible(true);
-			play5.setText(client.getUsername());
-			play5deck1.setVisible(true);
-			play5deck2.setVisible(true);
+			move5.setText(tony);
 		}
 		}
 		
@@ -763,16 +752,17 @@ ArrayList<Player> goal = client.data.playerGetter();
 	
 	public void setVis()
 	{
-		ArrayList<Player> goal = client.data.playerGetter();
+		//ArrayList<Player> goal = new ArrayList<Player>(client.data.playerGetter());
+		players = client.players;
 		
-		for(int i = 0; i<goal.size();i++)
+		for(int i = 0; i<players.size();i++)
 		{
-			int hum = goal.get(i).getSeat();
+			int hum = players.get(i).getSeat();
 		if (hum == 1)
 		{
 			player1.setVisible(true);
 			play1.setVisible(true);
-			play1.setText(client.getUsername());
+			play1.setText(players.get(i).getUsername());
 			play1deck1.setVisible(true);
 			play1deck2.setVisible(true);
 		}
@@ -780,7 +770,7 @@ ArrayList<Player> goal = client.data.playerGetter();
 		{
 			player2.setVisible(true);
 			play2.setVisible(true);
-			play2.setText(client.getUsername());
+			play2.setText(players.get(i).getUsername());
 			play2deck1.setVisible(true);
 			play2deck2.setVisible(true);
 		}
@@ -788,7 +778,7 @@ ArrayList<Player> goal = client.data.playerGetter();
 		{
 			player3.setVisible(true);
 			play3.setVisible(true);
-			play3.setText(client.getUsername());
+			play3.setText(players.get(i).getUsername());
 			play3deck1.setVisible(true);
 			play3deck2.setVisible(true);
 		}
@@ -796,7 +786,7 @@ ArrayList<Player> goal = client.data.playerGetter();
 		{
 			player4.setVisible(true);
 			play4.setVisible(true);
-			play4.setText(client.getUsername());
+			play4.setText(players.get(i).getUsername());
 			play4deck1.setVisible(true);
 			play4deck2.setVisible(true);
 		}
@@ -804,7 +794,7 @@ ArrayList<Player> goal = client.data.playerGetter();
 		{
 			player5.setVisible(true);
 			play5.setVisible(true);
-			play5.setText(client.getUsername());
+			play5.setText(players.get(i).getUsername());
 			play5deck1.setVisible(true);
 			play5deck2.setVisible(true);
 		}
@@ -855,6 +845,13 @@ ArrayList<Player> goal = client.data.playerGetter();
 		freezepanel.add(slider);
 		
 		moveit = new JButton("Move");
+		moveit.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				//Set this to be homePanel
+				
+			}
+		});
 		moveit.setBounds(170,675,100,25);
 		freezepanel.add(moveit);
 		moveit.setVisible(true);

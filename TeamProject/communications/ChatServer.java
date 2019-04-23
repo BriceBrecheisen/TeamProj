@@ -301,10 +301,14 @@ public class ChatServer extends AbstractServer
 						
 						//Update Server GUI
 						log.append("\n"+"Player: "+((Player)arg0).getUsername()+" got added to game!");
-
+						
+						//Make the new player data.
+						NewPlayerData sender = new NewPlayerData(arg1.getId(),clients.size());
+						sender.players = game.getAllPlayers();
 						//Send id and seat number.
 						try {
-							arg1.sendToClient(new NewPlayerData(arg1.getId(),clients.size()));
+							//arg1.sendToClient(new NewPlayerData(arg1.getId(),clients.size()));
+							arg1.sendToClient(sender);
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

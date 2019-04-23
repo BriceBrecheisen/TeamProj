@@ -141,9 +141,10 @@ public class ChatClient extends AbstractClient
 			//Set the players seat number and id number
 			player.setID(temp.getId());
 			player.setSeat(temp.getSeat());
-			players.add(player);
+			//players.add(player);
 			mainpanel.setplay(player);
-			data.playersSetter(players);
+			//data.playersSetter(players);
+			players = temp.players;
 			
 			try {
 				mainpanel.gamePanel();
@@ -186,10 +187,13 @@ public class ChatClient extends AbstractClient
 		
 		else if (arg0 instanceof GameData)
 		{
-			GameData update = ((GameData)arg0);
+			//Set data to game data object.
+			data = ((GameData)arg0);
 			
+			//Get player data.
 			//Now update the client GUI
-			
+			//players = data.playerGetter();
+			mainpanel.update();
 		}
 
 	}
