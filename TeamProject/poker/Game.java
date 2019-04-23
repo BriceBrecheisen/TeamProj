@@ -77,14 +77,14 @@ public class Game
 			}
 			
 			//If this is the second player, then we can start the game.
-			else if (players.size()==1)
+			/*else if (players.size()==1)
 			{
 				players.add(p);
 				
 				//Give turn to the first player, start game.
 				startRound();
 				return;
-			}
+			}*/
 
 			//If the player doesnt exist, then add him to players as well.
 			//If the player does exist, set the player at that index equal to the incoming player, since they are the same person,
@@ -302,7 +302,21 @@ public class Game
 		round = 1;
 		
 		//Restart game
-		startRound();
+		//startRound();
+		//Reset server ready count, and kick out all players
+		server.setReadyCount(0);
+		
+		//Send all players message that they can now click ready to play again
+		for (int a=0; a<server.getClients().size(); a++)
+		{
+			try {
+				server.getClients().get(a).sendToClient("Ready");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 	}
 	
 	public void displayWinner(String a)
