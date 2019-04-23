@@ -12,6 +12,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.awt.Font;
 import java.awt.Image;
 
@@ -80,13 +81,22 @@ public class MainPanel extends JPanel {
 	private JLabel play5deck1;
 	private JLabel play5deck2;
 	
-	
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private int deltaY = 0;
+	private JSlider slider;
+	private JButton ready;
+	private JButton moveit;
 	
 	private JPanel waiting;
 	private JLabel waitplease;
 	
 	private ChatClient client;
 	private Player player;
+	private Cards cards;
+	
+	private ArrayList<Card> card;
+	
+	private ArrayList<String> turd;
 	
 	public MainPanel() {
 		setLayout(null);
@@ -103,7 +113,7 @@ public class MainPanel extends JPanel {
 		
 		newuser = new JPanel();
 		newuser.setBackground(Color.BLACK);
-		newuser.setBounds(0,0,500,330);
+		newuser.setBounds(0,0,650,330);
 		add(newuser);
 		newuser.setLayout(null);
 		newuser.setVisible(false);
@@ -243,6 +253,24 @@ public class MainPanel extends JPanel {
 		newusertext = new JTextField();
 		newusertext.setBounds(170,65,150,30);
 		newuser.add(newusertext);
+		
+		port = new JLabel("Port: ");
+		port.setBounds(330,55,150,55);
+		port.setForeground(Color.GREEN);
+		newuser.add(port);
+		
+		IP = new JLabel("IP: ");
+		IP.setBounds(330,115,150,55);
+		IP.setForeground(Color.GREEN);
+		newuser.add(IP);
+		
+		port1 = new JTextField();
+		port1.setBounds(400,65,150,30);
+		newuser.add(port1);
+		
+		IP1 = new JTextField();
+		IP1.setBounds(400,125,150,30);
+		newuser.add(IP1);
 		
 		password2 = new JPasswordField();
 		password2.setBounds(170,125,150,30);
@@ -474,6 +502,17 @@ public class MainPanel extends JPanel {
 		gamegui.add(play5);
 		
 		
+		ready = new JButton("Ready!");
+		ready.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				ready.setVisible(false);
+				goPanel();
+			}
+		});
+		ready.setBounds(200, 10, 89, 23);
+		gamegui.add(ready);
+		
 	}
 	
 	public void waitPanel()
@@ -492,5 +531,188 @@ public class MainPanel extends JPanel {
 	public void fullPanel()
 	{
 		JOptionPane.showMessageDialog(null,"Sorry! Game is Currently Full! Please Wait!");
+	}
+	
+	public void goPanel()
+	{
+		ArrayList<String> moves = new ArrayList<String>(4);
+		moves.add("Call");
+		moves.add("Bet");
+		moves.add("Fold");
+		moves.add("Check");
+		
+		for (String s : moves) {
+			JRadioButton rdbtnRb = new JRadioButton(s);
+			buttonGroup.add(rdbtnRb);
+			if (deltaY ==0)
+				rdbtnRb.setSelected(true);
+			rdbtnRb.setBounds(170, 540+deltaY, 100, 25);
+			rdbtnRb.setActionCommand(s);
+			rdbtnRb.setVisible(true);
+			gamegui.add(rdbtnRb);
+			deltaY += 30;
+		}
+		
+		slider = new JSlider();
+		slider.setBounds(300, 570, 200, 75);
+		slider.setMaximum(10000);
+		slider.setMinimum(0);
+		slider.setPaintTicks(true);
+		slider.setMajorTickSpacing(2500);
+		slider.setPaintLabels(true);
+		if(buttonGroup.getSelection().getActionCommand().toString().equals("Bet"))
+		{
+			slider.setVisible(true);
+		}
+		else
+		{
+			slider.setVisible(false);
+		}
+		gamegui.add(slider);
+		
+		moveit = new JButton("Move");
+		moveit.setBounds(170,675,100,25);
+		gamegui.add(moveit);
+		moveit.setVisible(true);
+		
+	}
+	
+	
+	public void displayCards()
+	{        
+		card = cards.getCards();
+        for(int i = 0; i<card.size();i++)
+        {
+        	int pob = card.get(i).getSuit();
+        	int bob = card.get(i).getRank();
+        	
+        	String joe = null;
+        	String jum = null;
+        	turd = new ArrayList<String>();
+        	
+        	if(pob==0)
+        	{
+        		joe = "d";
+        	}
+        	if(pob ==1)
+        	{
+        		joe = "c";
+        	}
+        	if(pob==2)
+        	{
+        		joe = "h";
+        	}
+        	if(pob==3)
+        	{
+        		joe = "s";
+        	}
+        	if(bob==0)
+        	{
+        		jum = "14";
+        	}
+        	if(bob==1)
+        	{
+        		jum = "2";
+        	}
+        	if(bob==2)
+        	{
+        		jum = "3";
+        	}
+        	if(bob==3)
+        	{
+        		jum="4";
+        	}
+        	if(bob==4)
+        	{
+        		jum="5";
+        	}
+        	if(bob==5)
+        	{
+        		jum="6";
+        	}
+        	if(bob==6)
+        	{
+        		jum="7";
+        	}
+        	if(bob==7)
+        	{
+        		jum="8";
+        	}
+        	if(bob==8)
+        	{
+        		jum="9";
+        	}
+        	if(bob==9)
+        	{
+        		jum="10";
+        	}
+        	if(bob==10)
+        	{
+        		jum="11";
+        	}
+        	if(bob==11)
+        	{
+        		jum="12";
+        	}
+        	if(bob==12)
+        	{
+        		jum="13";
+        	}
+        	
+        	turd.add(joe+jum);
+        }
+        
+        
+        if(card.size()==3)
+        {
+        	commdeck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(0))));
+        	commdeck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(1))));
+        	commdeck3.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(1))));
+        }
+        
+        else if(card.size()==2)
+        {
+        	int hop = player.getSeat();
+        	if(hop == 1)
+        	{
+        		play1deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(0))));
+        		play1deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(1))));
+        	}
+        	else if(hop == 2)
+        	{
+        		play2deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(0))));
+        		play2deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(1))));
+        	}
+        	else if(hop == 3)
+        	{
+        		play3deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(0))));
+        		play3deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(1))));
+        	}
+        	else if(hop == 4)
+        	{
+        		play4deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(0))));
+        		play4deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(1))));
+        	}
+        	else if(hop == 5)
+        	{
+        		play5deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(0))));
+        		play5deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(1))));
+        	}
+        	
+        }
+        
+        else if(card.size()==0)
+        {
+        	ImageIcon image = new ImageIcon("/cardsimages/back.bmp");
+        	if(commdeck4.getIcon().equals(image))
+        	{
+        		commdeck4.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(0))));
+        	}
+        	else if(commdeck5.getIcon().equals(image))
+        	{
+        		commdeck5.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/"+turd.get(0))));
+        	}
+        }
+        
 	}
 }
