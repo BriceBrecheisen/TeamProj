@@ -4,6 +4,7 @@ import javax.swing.*;
 import communications.*;
 
 @SuppressWarnings("serial")
+//Game Frame Class.
 public class GameFrame extends JFrame {
 	
 	//private ChatClient client;
