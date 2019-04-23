@@ -103,9 +103,7 @@ public class Game
 		
 		//fourth round
 
-		//------------------------
-		// end dealing board
-		//------------------------
+		
 
 		System.out.println("The hand is complete...\n");
 
