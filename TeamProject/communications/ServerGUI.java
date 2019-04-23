@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+//This is the server gui.
 public class ServerGUI extends JFrame {
 	
 	 //Declaring all the variables to be used for the GUI.
