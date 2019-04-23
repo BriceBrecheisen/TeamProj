@@ -228,6 +228,9 @@ public class ChatServer extends AbstractServer
 							{
 								data.betsetter(((Player)arg0).getMoves().getbet());
 								data.bettingPlayerSetter(((Player)arg0).getSeat());
+								
+								//Set the game's bet amount
+								game.setBet(((Player)arg0).getMoves().getbet());
 							}
 
 							//Let all the players know of the player's move.

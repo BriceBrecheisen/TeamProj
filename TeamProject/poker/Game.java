@@ -14,12 +14,14 @@ public class Game
 	// variables
 	private Dealer deck = new Dealer();
 	private Game game = new Game();
-	private int numPlayers = 0;
+	//private int numPlayers = 0;
 	private int cardCounter = 0;
 	private int commCounter = 0;
 	private int pot = 0;
 	private int turn = 0;
-	private boolean fold = false;
+	private int round = 1;
+	private int bet = 0;
+	//private boolean fold = false;
 	private boolean isplaying = false;
 	
 	ArrayList<Player> players;
@@ -33,6 +35,16 @@ public class Game
 		//numPlayers = game.getNumberOfPlayers();
 		players = new ArrayList<Player>();
 		waitingplayers = new ArrayList<Player>();
+	}
+	
+	public int getBet()
+	{
+		return bet;
+	}
+	
+	public void setBet(int a)
+	{
+		bet = a;
 	}
 	
 	public int getTurn()
@@ -140,7 +152,7 @@ public class Game
 		//If we are out of players, end round.
 		if (turn>players.size())
 		{
-			endRound();
+			endTurn();
 			//Reset turn
 			turn = 1;
 			return;
@@ -175,15 +187,57 @@ public class Game
 		
 	}
 	
+	public void endTurn()
+	{
+		//When all the turns have ended, increment round.
+		round++;
+		
+		//Start the next round.
+		startRound();
+	}
+	
 	public void startRound()
+	{
+		//Deal cards to each player if its the second round.
+		if (round==1)
+		{
+			dealCardsToPlayers();
+			startTurn();
+		}
+
+		//If its the second round, then deal the three comm cards.
+		else if (round==2)
+		{
+			dealThreeCommCards();
+			startTurn();
+		}
+		
+		//If its the third round
+		else if (round==3)
+		{
+			dealOneCommCard();
+			startTurn();
+		}
+		
+		//If its the third round
+		else if (round==4)
+		{
+			dealOneCommCard();
+			startTurn();
+		}
+
+		else if (round>4)
+		{
+			endRound();
+		}
+	}
+	
+	public void startTurn()
 	{
 		//Give turn to the first player.
 		turn=1;
 		//Set isplaying to true.
 		isplaying = true;
-		
-		//Deal cards to each player
-		dealCardsToPlayers();
 		
 		//Tell players if it's their turn or not.
 		for (int i=0; i<players.size();i++)
@@ -232,8 +286,9 @@ public class Game
 		
 		waitingplayers = null;
 		
+		//Evaluate everyone's hands.
 		//Let all players know who the winner is.
-		displayWinner();
+		displayWinner(evaluateHands());
 		
 		//Wait for 5 seconds.
 		try {
@@ -243,15 +298,58 @@ public class Game
 			e.printStackTrace();
 		}
 		
+		//Reset round count
+		round = 1;
+		
 		//Restart game
 		startRound();
 	}
 	
-	public void displayWinner()
+	public void displayWinner(String a)
 	{
 		//Add all money from pot to this player's chips.
+		
+		//Send winning info to all clients.
+		String b = "Winner info:";
+		a = b+a;
+		
+		for (int k=0;k<players.size();k++)
+		{
+			try {
+				server.getClients().get(k).sendToClient(a);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
+	public String evaluateHands()
+	{
+		String winninginfo = "";
+	
+		for (int i=0;i<players.size();i++)
+		{
+			Hand handToEval = new Hand();
+
+			// populate with player cards           
+			for (int j = 0; j < players.get(i).holeCardsSize(); j++)
+			{
+				handToEval.addCard(players.get(i).getCard(j),j);
+			}
+
+			//populate with board cards
+			for (int j=players.get(i).holeCardsSize();j<(players.get(i).holeCardsSize()+deck.commSize());j++)
+			{
+				handToEval.addCard(deck.getcommCard(j-players.get(i).holeCardsSize()),j);
+			}
+
+			winninginfo+="Player " + (i+1) + " hand value: " + handToEval.evaluateHand() + "\n";  
+		}
+		
+		return winninginfo;
+	}
+
 	public void chipsUpdate()
 	{
 		//Check if anyone bet
@@ -359,9 +457,58 @@ public class Game
 			}
 		}
 	}
-
-	public static void main(String[] args) throws Exception 
+	
+	public void dealThreeCommCards()
 	{
+		Cards sender = new Cards();
+		for (int i=0; i<3;i++){
+			Card a = deck.getCard(cardCounter++);
+			
+			//Set the deck's community cards.
+			deck.setcommCard(a, commCounter++);
+			sender.addCard(a);
+		}
+		
+		//Send the dealer's community cards to all players.
+		for (int k=0;k<players.size();k++)
+		{
+			try {
+				server.getClients().get(k).sendToClient(sender);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+	}
+	
+	public void dealOneCommCard()
+	{
+		Cards sender = new Cards();
+
+		Card a = deck.getCard(cardCounter++);
+
+		//Set the deck's community cards.
+		deck.setcommCard(a, commCounter++);
+		sender.addCard(a);
+
+
+		//Send the dealer's community cards to all players.
+		for (int k=0;k<players.size();k++)
+		{
+			try {
+				server.getClients().get(k).sendToClient(sender);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+}
+
+	//public static void main(String[] args) throws Exception 
+	//{
 		/* variables
 		Dealer deck = new Dealer();
 		Game game = new Game();
@@ -403,7 +550,7 @@ public class Game
 
 
 		// deal flop
-		for (int i=0; i<3;i++){
+		/*for (int i=0; i<3;i++){
 			deck.setcommCard(deck.getCard(cardCounter++), commCounter++);
 		}
 
@@ -415,7 +562,7 @@ public class Game
 		// third round
 
 		// deal river
-		deck.setcommCard(deck.getCard(cardCounter++), commCounter++);
+		deck.setcommCard(deck.getCard(cardCounter++), commCounter++);*/
 		
 		//fourth round
 
@@ -423,22 +570,22 @@ public class Game
 		// end dealing board
 		//------------------------
 
-		System.out.println("The hand is complete...\n");
+		//System.out.println("The hand is complete...\n");
 
 		// print deck
 		//deck.printDeck();
 
 		//print board
-		deck.printCommunityCards();
+		//deck.printCommunityCards();
 
 		// print player cards
-		System.out.println("Player's cards:\n");
+		/*System.out.println("Player's cards:\n");
 		for (int i=0;i<numPlayers;i++){
 			players.get(i).printPlayerCards(i);
-		}
+		}*/
 		
 		//This compares each player's hands
-		for (int i=0;i<numPlayers;i++){
+		/*for (int i=0;i<numPlayers;i++){
 			Hand handToEval = new Hand();
 
 			// populate with player cards           
@@ -488,7 +635,7 @@ public class Game
 
 		return intPlayers;
 	}*/
-}
+//}
 
 
 
