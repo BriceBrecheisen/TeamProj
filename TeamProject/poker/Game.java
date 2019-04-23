@@ -634,8 +634,113 @@ public class Game
 		}       
 
 		return intPlayers;
+<<<<<<< HEAD
+	}
+
+	public static void main(String[] args) throws Exception 
+	{
+		// variables
+		Dealer deck = new Dealer();
+		Game game = new Game();
+		int numPlayers = 0;
+		int cardCounter = 0;
+		int commCounter = 0;
+		int pot = 0;
+		boolean fold = false;
+
+		// initializations      
+		numPlayers = game.getNumberOfPlayers();
+		ArrayList<Player> players = new ArrayList<Player>();
+
+
+		// Initialize players
+		for (int i=0;i<numPlayers;i++){
+			players.add(new Player());
+		}
+
+		//this gives our players cards, 2 to a player
+		for (int i=0;i<2;i++){
+			for (int j=0;j<numPlayers;j++){
+				players.get(j).setCard(deck.getCard(cardCounter++), i);
+			}
+		}
+	
+
+		// first round,tried to do moves but not working properly
+//		for (int i = 0; i < numPlayers; i++)
+//		{
+//
+//			String move = players.get(i).getMove();
+//			if (move.equals("bet"))
+//			{
+//				int bet = players.get(i).bet();
+//				pot+=bet;
+//			}
+//			else if (move.equals("fold"))
+//				fold = players.get(i).fold();
+//		}
+
+
+		// deal flop
+		for (int i=0; i<3;i++){
+			deck.setcommCard(deck.getCard(cardCounter++), commCounter++);
+		}
+
+		// second round
+
+		// deal turn
+		deck.setcommCard(deck.getCard(cardCounter++), commCounter++);
+
+		// third round
+
+		// deal river
+		deck.setcommCard(deck.getCard(cardCounter++), commCounter++);
+		
+		//fourth round
+
+		
+
+		System.out.println("The hand is complete...\n");
+
+		// print deck
+		//deck.printDeck();
+
+		//print board
+		deck.printCommunityCards();
+
+		// print player cards
+		System.out.println("Player's cards:\n");
+		for (int i=0;i<numPlayers;i++){
+			players.get(i).printPlayerCards(i);
+		}
+		
+		//This compares each player's hands
+		for (int i=0;i<numPlayers;i++){
+			Hand handToEval = new Hand();
+
+			// populate with player cards           
+			for (int j = 0; j < players.get(i).holeCardsSize(); j++)
+			{
+				handToEval.addCard(players.get(i).getCard(j),j);
+			}
+
+			//populate with board cards
+			for (int j=players.get(i).holeCardsSize();j<(players.get(i).holeCardsSize()+deck.commSize());j++)
+			{
+				handToEval.addCard(deck.getcommCard(j-players.get(i).holeCardsSize()),j);
+			}
+
+			System.out.println("Player " + (i+1) + " hand value: " + handToEval.evaluateHand());    
+		}
+	}
+
+
+	
+}
+=======
 	}*/
 //}
+>>>>>>> branch 'master' of https://github.com/BriceBrecheisen/TeamProj.git
 
 
 
