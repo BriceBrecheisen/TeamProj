@@ -285,6 +285,11 @@ public class MainPanel extends JPanel {
 		client = c;
 	}
 	
+	public void cardsSetter(Cards c)
+	{
+		cards = c;
+	}
+	
 	public void newuserPanel()
 	{
 		newuser.setVisible(true);
