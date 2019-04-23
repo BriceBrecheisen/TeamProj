@@ -21,6 +21,11 @@ public class ChatClient extends AbstractClient
 		player = new Player();
 	}
 	
+	public String getUsername()
+	{
+		return username;
+	}
+	
 	public void setUsername(String s)
 	{
 		username = s;

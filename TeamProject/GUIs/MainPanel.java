@@ -151,10 +151,14 @@ public class MainPanel extends JPanel {
 		add(gamegui);
 		gamegui.setLayout(null);
 		
+		usertext = new JTextField();
+		
 		loginPanel();
 	}
 	
 	public void loginPanel() {
+		newuser.setVisible(false);
+		home.setVisible(false);
 		loginpanel.setVisible(true);
 		
 		loginuserlabel = new JLabel("Username: ");
@@ -185,7 +189,7 @@ public class MainPanel extends JPanel {
 		IP1.setBounds(400,125,150,30);
 		loginpanel.add(IP1);
 		
-		usertext = new JTextField();
+		//usertext = new JTextField();
 		usertext.setBounds(100, 65, 150, 30);
 		loginpanel.add(usertext);
 		
@@ -223,17 +227,18 @@ public class MainPanel extends JPanel {
 				LoginData login = new LoginData(user,(new String(password1.getPassword())));
 				client.setUsername(user);
 				
+			/*	port1.setText("");
+				IP1.setText("");
+				usertext.setText("");
+				password1.setText("");*/
+				
 				try {
 					client.sendToServer(login);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				port1.setText("");
-				IP1.setText("");
-				usertext.setText("");
-				password1.setText("");
+			
 			}
 		});
 		LoginButton.setBounds(315, 170, 150, 30);
@@ -254,6 +259,8 @@ public class MainPanel extends JPanel {
 		});
 		loginnewuser.setBounds(140, 170, 150, 30);
 		loginpanel.add(loginnewuser);
+		
+		loginpanel.repaint();
 		
 	}
 	
@@ -376,6 +383,7 @@ public class MainPanel extends JPanel {
 		previous.setBounds(248, 230, 150, 30);
 		newuser.add(previous);
 		
+		newuser.repaint();
 	}
 	
 	public void homePanel(String bob)
@@ -415,6 +423,7 @@ public class MainPanel extends JPanel {
 		});
 		jointable.setBounds(450,300,300,50);
 		home.add(jointable);
+		home.repaint();
 	}
 	
 	public void gamePanel() throws IOException
@@ -461,7 +470,7 @@ public class MainPanel extends JPanel {
 		commdeck5 = new JLabel();
 		commdeck5.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		commdeck5.setBounds(725,315,71,100);
-		commdeck4.setVisible(false);
+		commdeck5.setVisible(false);
 		gamegui.add(commdeck5);
 		
 		play1deck1 = new JLabel();
@@ -589,8 +598,8 @@ public class MainPanel extends JPanel {
 		play5.setVisible(false);
 		gamegui.add(play5);
 		
-		
-		
+		setVis();
+				
 		ready = new JButton("Ready!");
 		ready.addMouseListener(new MouseAdapter() {
 			@Override
@@ -613,6 +622,8 @@ public class MainPanel extends JPanel {
 		back.setBounds(300, 10, 89, 23);
 		gamegui.add(ready);
 		
+		gamegui.repaint();
+		
 	}
 	
 	public void waitPanel()
@@ -628,9 +639,61 @@ public class MainPanel extends JPanel {
 		waiting.add(waitplease);
 	}
 	
+	public void setVis()
+	{
+		int hum = player.getSeat();
+		
+		if (hum == 1)
+		{
+			player1.setVisible(true);
+			play1.setVisible(true);
+			play1.setText(client.getUsername());
+			play1deck1.setVisible(true);
+			play1deck2.setVisible(true);
+		}
+		else if (hum == 2)
+		{
+			player2.setVisible(true);
+			play2.setVisible(true);
+			play2.setText(client.getUsername());
+			play2deck1.setVisible(true);
+			play2deck2.setVisible(true);
+		}
+		else if (hum == 3)
+		{
+			player3.setVisible(true);
+			play3.setVisible(true);
+			play3.setText(client.getUsername());
+			play3deck1.setVisible(true);
+			play3deck2.setVisible(true);
+		}
+		else if (hum == 4)
+		{
+			player4.setVisible(true);
+			play4.setVisible(true);
+			play4.setText(client.getUsername());
+			play4deck1.setVisible(true);
+			play4deck2.setVisible(true);
+		}
+		else if (hum == 5)
+		{
+			player5.setVisible(true);
+			play5.setVisible(true);
+			play5.setText(client.getUsername());
+			play5deck1.setVisible(true);
+			play5deck2.setVisible(true);
+		}
+		
+	}
+	
 	public void fullPanel()
 	{
 		JOptionPane.showMessageDialog(null,"Sorry! Game is Currently Full! Please Wait!");
+	}
+	
+	public void freezePanel()
+	{
+		
 	}
 	
 	public void goPanel()
@@ -674,6 +737,9 @@ public class MainPanel extends JPanel {
 		moveit.setBounds(170,675,100,25);
 		gamegui.add(moveit);
 		moveit.setVisible(true);
+		
+		
+		gamegui.repaint();
 		
 	}
 	
