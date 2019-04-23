@@ -106,7 +106,7 @@ public class Database
 	  //Starting the query string
 	  //Adding the users information into the query string.
 	  String query = "INSERT into poker_users values('"+user.getUsername()
-	  +"',aes_encrypt('"+user.getPassword()+"','key');";
+	  +"',aes_encrypt('"+user.getPassword()+"','key'));";
 	  
 	  //Executing the query as a DML
 	  try {

@@ -337,7 +337,7 @@ public class MainPanel extends JPanel {
 					
 					//Check with database
 					//Check with database.
-					CreateAccountData create = new CreateAccountData(newusertext.getText(),(new String(password1.getPassword())));
+					CreateAccountData create = new CreateAccountData(newusertext.getText(),(new String(password2.getPassword())));
 					
 					try {
 						client.sendToServer(create);

@@ -149,7 +149,7 @@ public class ChatServer extends AbstractServer
 			{
 				try {
 					arg1.sendToClient("truth");
-					log.append(loginData.getUsername() + " is logged in!");
+					log.append("\n"+loginData.getUsername() + " is logged in!");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -193,7 +193,7 @@ public class ChatServer extends AbstractServer
 
 				try {
 					arg1.sendToClient("done");
-					log.append(createAccData.getUsername() + " has created an account!");
+					log.append("\n"+createAccData.getUsername() + " has created an account!");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -251,7 +251,7 @@ public class ChatServer extends AbstractServer
 						//Add the player data to the player waitlist.
 						game.setPlayers((Player)arg0);
 						//Update Server GUI
-						log.append("Player: "+arg1.getId()+" is waiting!");
+						log.append("\n"+"Player: "+arg1.getId()+" is waiting!");
 
 						//Tell client to wait.
 						try {
@@ -275,7 +275,7 @@ public class ChatServer extends AbstractServer
 						game.setPlayers(temp);
 						
 						//Update Server GUI
-						log.append("Player: "+arg1.getId()+" got added to game!");
+						log.append("\n"+"Player: "+arg1.getId()+" got added to game!");
 
 						//Send id and seat number.
 						try {
