@@ -218,6 +218,9 @@ public class ChatServer extends AbstractServer
 							//If it is their turn, then set their new moves into game.
 							game.setPlayers((Player)arg0);
 							
+							//Update Server GUI
+							log.append("Player: "+arg1.getId()+" moved: " +((Player)arg0).getMoves().getMove());
+							
 							//Deal with the player's moves
 							game.makinMoves();
 							
@@ -245,6 +248,8 @@ public class ChatServer extends AbstractServer
 					{
 						//Add the player data to the player waitlist.
 						game.setPlayers((Player)arg0);
+						//Update Server GUI
+						log.append("Player: "+arg1.getId()+" is waiting!");
 
 						//Tell client to wait.
 						try {
@@ -266,6 +271,9 @@ public class ChatServer extends AbstractServer
 						temp.setSeat(clients.size());
 						//Add Player data to the game.
 						game.setPlayers(temp);
+						
+						//Update Server GUI
+						log.append("Player: "+arg1.getId()+" got added to game!");
 
 						//Send id and seat number.
 						try {

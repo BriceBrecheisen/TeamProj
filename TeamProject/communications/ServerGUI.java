@@ -62,7 +62,12 @@ public class ServerGUI extends JFrame {
 	    
 	    ///////////////////////////////
 	    //Instantiating the server
-	    server = new ChatServer();
+	    try {
+			server = new ChatServer();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 	    server.setLog(serverLog);
 	    server.setStatus(status);
 	    

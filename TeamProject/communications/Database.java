@@ -19,7 +19,7 @@ public class Database
     //Add your code here
 	//Read properties file
 	 Properties prop = new Properties();
-	 FileInputStream fis = new FileInputStream("lab7out/db.properties");
+	 FileInputStream fis = new FileInputStream("communications/db.properties");
 	 prop.load(fis);
 	 String url = prop.getProperty("url");
 	 String user = prop.getProperty("user");

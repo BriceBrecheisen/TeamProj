@@ -130,8 +130,6 @@ public class MainPanel extends JPanel {
 		gamegui.setLayout(null);
 		
 		loginPanel();
-		
-		
 	}
 	
 	public void loginPanel() {
@@ -214,6 +212,11 @@ public class MainPanel extends JPanel {
 		loginnewuser.setBounds(140, 170, 150, 30);
 		loginpanel.add(loginnewuser);
 		
+	}
+	
+	public void setClient(ChatClient c)
+	{
+		client = c;
 	}
 	
 	public void newuserPanel()
