@@ -95,7 +95,7 @@ public class Game
 			{
 				for (int i=0; i<players.size(); i++)
 				{
-					if (p.getID() == players.get(i).getID())
+					if (p.getUsername().equals(players.get(i).getUsername()))
 					{
 						players.set(i, p);
 						return;
@@ -113,7 +113,7 @@ public class Game
 			//Update moves if they exist.
 			for (int i=0; i<players.size(); i++)
 			{
-				if (p.getID() == players.get(i).getID())
+				if (p.getUsername().equals(players.get(i).getUsername()))
 				{
 					players.set(i, p);
 					return;
@@ -144,6 +144,20 @@ public class Game
 		
 		//Else the player has already been added before, return false.
 		return false;*/
+	}
+	
+	//Checks if the game has a player.
+	public boolean containsPlayer(Player p)
+	{
+		for (int i=0; i<players.size(); i++)
+		{
+			if (p.getUsername() == players.get(i).getUsername())
+			{
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
 	public void rotateTurn()
@@ -427,9 +441,10 @@ public class Game
 	public ArrayList<Player> getAllPlayers()
 	{
 		//Return only the players who have made a move.
-		ArrayList<Player> returnval=new ArrayList<Player>();
+		/*ArrayList<Player> returnval=new ArrayList<Player>();
 		returnval.addAll(players.subList(0, turn-1));
-		return returnval;
+		return returnval;*/
+		return players;
 	}
 	
 	

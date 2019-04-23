@@ -106,7 +106,7 @@ public class MainPanel extends JPanel {
 	private JPanel freezepanel;
 	private JLabel waitplease;
 	
-	private ChatClient client;
+	public ChatClient client;
 	private Player player;
 	private Cards cards;
 	
@@ -441,7 +441,7 @@ public class MainPanel extends JPanel {
 					//Send this player's data to the server.
 					player.setUsername(user);
 					
-					client.openConnection();
+					//client.openConnection();
 					client.sendToServer(player);
 					//gamePanel();
 				} catch (IOException e) {
@@ -696,12 +696,14 @@ public class MainPanel extends JPanel {
 	
 	public void update()
 	{
-		ArrayList<Player> goal = new ArrayList<Player>(client.data.playerGetter());
+		//ArrayList<Player> goal = new ArrayList<Player>(client.data.playerGetter());
+		players = client.players;
 		
-		for(int i = 0; i<goal.size();i++)
+		for(int i = 0; i<players.size();i++)
 		{
-			String tony = goal.get(i).getMoves().getMove();
-			int hum = goal.get(i).getSeat();
+			String tony = players.get(i).getMoves().getMove();
+			int hum = players.get(i).getSeat();
+			
 		if (hum == 1)
 		{
 			move1.setText(tony);

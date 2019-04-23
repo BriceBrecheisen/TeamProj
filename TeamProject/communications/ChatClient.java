@@ -96,7 +96,7 @@ public class ChatClient extends AbstractClient
 
 			else if (((String)arg0).equals("go"))
 			{
-				//mainpanel.getgamePanel();
+				mainpanel.goPanel();
 			}
 
 			else if (((String)arg0).equals("Full!"))
@@ -145,6 +145,7 @@ public class ChatClient extends AbstractClient
 			mainpanel.setplay(player);
 			//data.playersSetter(players);
 			players = temp.players;
+			mainpanel.players = temp.players;
 			
 			try {
 				mainpanel.gamePanel();
@@ -190,10 +191,24 @@ public class ChatClient extends AbstractClient
 			//Set data to game data object.
 			data = ((GameData)arg0);
 			
-			//Get player data.
-			//Now update the client GUI
-			//players = data.playerGetter();
-			mainpanel.update();
+			if(data.returnBet()==99999)
+			{
+				//Get player data.
+				//Now update the client GUI
+				//players = data.playerGetter();
+				players = data.playerGetter();
+				mainpanel.players = data.playerGetter();
+				mainpanel.setVis();
+			}
+			
+			else
+			{
+				//Actual moves are coming in.
+				players = data.playerGetter();
+				mainpanel.update();
+			}
+			
+		
 		}
 
 	}

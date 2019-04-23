@@ -35,7 +35,7 @@ public class ChatServer extends AbstractServer
 		game.setServer(this);
 	}
 
-	public String setClients(ConnectionToClient p)
+	public String setClients(Object o, ConnectionToClient p)
 	{
 		//If this is the first player, just add the dude to the list of players in the game.
 		/*if (clients.isEmpty())
@@ -62,22 +62,24 @@ public class ChatServer extends AbstractServer
 		 */
 		//If clients doesn't contain the passed in client, and game is not being played,
 		//the passed in client will be added.
-		if ((!clients.contains(p))&&(game.isPlaying()==false))
+		if ((!game.containsPlayer((Player)o))&&(game.isPlaying()==false))
 		{
 			clients.add(p);
 			return "added";
 		}
 
 		//If the client is new, but game is being played, save client in waitlist
-		else if ((!clients.contains(p))&&(game.isPlaying()==true))
+		else if (!game.containsPlayer((Player)o)&&(game.isPlaying()==true))
 		{
 			waitingclients.add(p);
 			return "wait";
 		}
 
 		//Else the client has already been added before, return playing.
-		else if ((clients.contains(p))&&(game.isPlaying()==true))
+		else if (game.containsPlayer((Player)o)&&(game.isPlaying()==true))
 		{
+			//Reset the client.
+			clients.set(((Player)o).getSeat()-1, p);
 			return "playing";
 		}
 
@@ -237,7 +239,7 @@ public class ChatServer extends AbstractServer
 					//If the client has already been added before, and the game is being played,
 					//then they are just responding with their moves. 
 					//Send their movies to all the other players.
-					if (setClients(arg1).equals("playing"))
+					if (setClients(arg0,arg1).equals("playing"))
 					{
 						//Check if its their turn.
 						if (game.checkTurn() == ((Player)arg0).getSeat())
@@ -271,7 +273,7 @@ public class ChatServer extends AbstractServer
 						}
 					}
 
-					else if (setClients(arg1).equals("wait"))
+					else if (setClients(arg0,arg1).equals("wait"))
 					{
 						//Add the player data to the player waitlist.
 						game.setPlayers((Player)arg0);
@@ -292,7 +294,7 @@ public class ChatServer extends AbstractServer
 				else if (!game.isPlaying())
 				{
 					//If they have been added successfully, they will be sent their id and seat number.
-					if(setClients(arg1).equals("added"))
+					if(setClients(arg0,arg1).equals("added"))
 					{
 						Player temp = (Player)arg0;
 						temp.setSeat(clients.size());
@@ -315,7 +317,7 @@ public class ChatServer extends AbstractServer
 						}
 						
 						//Let all players know of new data.
-						letAllKnow();
+						updatePlayers();
 					}
 				}
 
@@ -357,6 +359,33 @@ public class ChatServer extends AbstractServer
 		//Clear out game data to be reused for next round of moves by players.
 		resetGameData();
 
+	}
+	
+	public void updatePlayers()
+	{
+		//Let everyone know of only the moves of all the players who have moved.
+				//First create the game data object, so that it can be sent to all players.
+				data.playersSetter(game.getAllPlayers());
+				
+				data.betsetter(99999);
+
+				//Send player move info to all players.
+				for (int i=0; i<clients.size(); i++)
+				{
+					try {
+						clients.get(i).sendToClient(data);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						System.out.println("Could not send data to player!");
+					}
+				}
+				
+				//After sending move, clear turn player's move, so that the new one can then come in.
+
+				//Clear out game data to be reused for next round of moves by players.
+				resetGameData();
+		
 	}
 
 	public void setWinnerInfo(String w)
