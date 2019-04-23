@@ -215,8 +215,12 @@ public class ChatServer extends AbstractServer
 						//Check if its their turn.
 						if (game.checkTurn() == ((Player)arg0).getSeat())
 						{
-							//If it is their turn, then set their new movies into game.
+							//If it is their turn, then set their new moves into game.
 							game.setPlayers((Player)arg0);
+							
+							//Deal with the player's moves
+							game.makinMoves();
+							
 							//Check if the player made a bet
 							//If they did make a bet, set the GameData's bet equal to it, to let all the players know.
 							//Then set the player's bet equal to 0.
@@ -267,7 +271,6 @@ public class ChatServer extends AbstractServer
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-
 					}
 				}
 
@@ -303,7 +306,6 @@ public class ChatServer extends AbstractServer
 				System.out.println("Could not send data to player!");
 			}
 		}
-		
 		
 		//After sending move, clear turn player's move, so that the new one can then come in.
 

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import communications.Cards;
 import communications.ChatClient;
 import communications.ChatServer;
 
@@ -181,6 +182,9 @@ public class Game
 		//Set isplaying to true.
 		isplaying = true;
 		
+		//Deal cards to each player
+		dealCardsToPlayers();
+		
 		//Tell players if it's their turn or not.
 		for (int i=0; i<players.size();i++)
 		{
@@ -269,6 +273,30 @@ public class Game
 		
 	}
 	
+	//This function will handle the moves of every player who's turn it is.
+	public void makinMoves()
+	{
+		Player dude = players.get(turn-1);
+		//If the player bet
+		if (dude.getMoves().getbet()>0)
+		//Update everyone's chips.
+			game.chipsUpdate();
+		
+		//If the player call-ed
+		else if (dude.getMoves().getMove()=="call")
+			//Update everyone's chips.
+			game.chipsUpdate();
+		
+		//If the player folded
+		else if (dude.getMoves().getMove()=="fold")
+			//Remove player.
+			players.remove(dude);
+		
+		//If the player call-ed
+		//else if (dude.getMoves().getMove()=="call";
+		//Do nothing, because the server will rotate round anyways
+	}
+	
 	public Player getPlayer(long a)
 	{
 		//Return the player who's id is being passed in.
@@ -301,11 +329,35 @@ public class Game
 	public void dealCardsToPlayers()
 	{
 		//this gives our players cards, 2 to a player
-				for (int i=0;i<2;i++){
-					for (int j=0;j<players.size();j++){
-						players.get(j).setCard(deck.getCard(cardCounter++), i);
-					}
-				}
+		//Make an arrayList of cards to be sent to each player.
+		ArrayList<Cards> cards = new ArrayList<Cards>();
+		
+		//Initialize the 2d array of cards.
+		for (int a=0; a<players.size(); a++)
+			cards.add(new Cards());
+			
+		
+		//Initialize cards 
+		//Save two cards for each player in the array list of cards.
+		for (int i=0;i<2;i++)
+		{
+			for (int j=0;j<players.size();j++)
+			{
+				//players.get(j).setCard(deck.getCard(cardCounter++), i);
+				cards.get(j).addCard(deck.getCard(cardCounter++));
+			}
+		}
+		
+		//Sending each player their cards.
+		for (int k=0;k<players.size();k++)
+		{
+			try {
+				server.getClients().get(k).sendToClient(cards.get(k));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public static void main(String[] args) throws Exception 
@@ -328,11 +380,11 @@ public class Game
 		}*/
 
 		//this gives our players cards, 2 to a player
-		for (int i=0;i<2;i++){
+		/*for (int i=0;i<2;i++){
 			for (int j=0;j<numPlayers;j++){
 				players.get(j).setCard(deck.getCard(cardCounter++), i);
 			}
-		}
+		}*/
 	
 
 		// first round,tried to do moves but not working properly

@@ -1,9 +1,15 @@
 package poker;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameData {
+public class GameData implements Serializable 
+{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	//Data fields.
 	private ArrayList<Player> players;
 	private int bet;

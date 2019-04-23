@@ -95,13 +95,31 @@ public class ChatClient extends AbstractClient
 		//If the server sends a GameData object
 
 		//If the server sends a NewPlayerData object
-		if (arg0 instanceof NewPlayerData)
+		else if (arg0 instanceof NewPlayerData)
 		{
 			NewPlayerData temp = (NewPlayerData)arg0;
 			//Set the players seat number and id number
 			player.setID(temp.getId());
 			player.setSeat(temp.getSeat());
 
+		}
+		
+		//If the server sends card information
+		else if (arg0 instanceof Cards)
+		{
+			Cards cards = (Cards)arg0;
+			
+			//If the server sent two cards, its this player's hole cards.
+			if (cards.getCards().size()==2)
+				player.setHoleCards(cards.getCards());
+			
+			//If the server sent three cards, its the dealer's first three community cards
+			else if (cards.getCards().size()==3);
+				//Set Dealers community cards. Remove ; above.
+			
+			//If the server sent one card, its the dealer's community cards after first three.
+			else if (cards.getCards().size()==1);
+				//Set Dealers community cards. Remove ; above.
 		}
 
 	}

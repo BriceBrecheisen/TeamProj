@@ -3,10 +3,15 @@ package poker;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Player {
-    private Card[] holeCards = new Card[2];
+public class Player implements Serializable{
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Card[] holeCards = new Card[2];
     private Move move;
     private long id;
     private int seatno;
@@ -65,6 +70,13 @@ public class Player {
     //methods
     public void setCard(Card card, int cardNum){
         holeCards[cardNum] = card;
+    }
+    
+    //Setting the player's hole cards.
+    public void setHoleCards(ArrayList<Card> c)
+    {
+    	for (int i=0; i<2;i++)
+    		holeCards[i] = c.get(i);
     }
 
     public Card getCard(int cardNum){

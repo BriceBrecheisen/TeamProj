@@ -1,7 +1,13 @@
 package communications;
 
-public class NewPlayerData {
+import java.io.Serializable;
+
+public class NewPlayerData implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private long id;
 	private int seatno;
 	
