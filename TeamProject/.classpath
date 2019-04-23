@@ -6,8 +6,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path=""/>
-	<classpathentry kind="lib" path="D:/Uni Work Doe/Software Engineering/Team Project/Project/TeamProj/TeamProject/ocsf.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="D:/Uni Work Doe/Software Engineering/Team Project/Project/TeamProj/TeamProject/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Sport/Downloads/ocsf.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>

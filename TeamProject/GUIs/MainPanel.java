@@ -90,6 +90,7 @@ public class MainPanel extends JPanel {
 	private JSlider slider;
 	private JButton ready;
 	private JButton moveit;
+	private JButton back;
 	
 	private JPanel waiting;
 	private JLabel waitplease;
@@ -380,6 +381,7 @@ public class MainPanel extends JPanel {
 	public void homePanel(String bob)
 	{
 		loginpanel.setVisible(false);
+		gamegui.setVisible(false);
 		home.setVisible(true);
 
 		logout = new JButton("Logout");
@@ -419,6 +421,7 @@ public class MainPanel extends JPanel {
 	{
 		//this is just a fake comment
 		waiting.setVisible(false);
+		home.setVisible(false);
 		gamegui.setVisible(true);
 
 		dealer = new JLabel();
@@ -434,76 +437,91 @@ public class MainPanel extends JPanel {
 		commdeck1 = new JLabel();
 		commdeck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		commdeck1.setBounds(425,315,71,100);
+		commdeck1.setVisible(false);
 		gamegui.add(commdeck1);
 		
 		commdeck2 = new JLabel();
 		commdeck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		commdeck2.setBounds(500,315,71,100);
+		commdeck2.setVisible(false);
 		gamegui.add(commdeck2);
 		
 		commdeck3 = new JLabel();
 		commdeck3.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		commdeck3.setBounds(575,315,71,100);
+		commdeck3.setVisible(false);
 		gamegui.add(commdeck3);
 		
 		commdeck4 = new JLabel();
 		commdeck4.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		commdeck4.setBounds(650,315,71,100);
+		commdeck4.setVisible(false);
 		gamegui.add(commdeck4);
 		
 		commdeck5 = new JLabel();
 		commdeck5.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		commdeck5.setBounds(725,315,71,100);
+		commdeck4.setVisible(false);
 		gamegui.add(commdeck5);
 		
 		play1deck1 = new JLabel();
 		play1deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		play1deck1.setBounds(10,160,71,100);
+		play1deck1.setVisible(false);
 		gamegui.add(play1deck1);
 		
 		play1deck2 = new JLabel();
 		play1deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		play1deck2.setBounds(90,160,71,100);
+		play1deck2.setVisible(false);
 		gamegui.add(play1deck2);
 		
 		play2deck1 = new JLabel();
 		play2deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		play2deck1.setBounds(10,540,71,100);
+		play2deck1.setVisible(false);
 		gamegui.add(play2deck1);
 		
 		play2deck2 = new JLabel();
 		play2deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		play2deck2.setBounds(90,540,71,100);
+		play2deck2.setVisible(false);
 		gamegui.add(play2deck2);
 		
 		play3deck1 = new JLabel();
 		play3deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		play3deck1.setBounds(540,500,71,100);
+		play3deck1.setVisible(false);
 		gamegui.add(play3deck1);
 		
 		play3deck2 = new JLabel();
 		play3deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		play3deck2.setBounds(620,500,71,100);
+		play3deck2.setVisible(false);
 		gamegui.add(play3deck2);
 		
 		play4deck1 = new JLabel();
 		play4deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		play4deck1.setBounds(1030,540,71,100);
+		play4deck1.setVisible(false);
 		gamegui.add(play4deck1);
 		
 		play4deck2 = new JLabel();
 		play4deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		play4deck2.setBounds(1110,540,71,100);
+		play4deck2.setVisible(false);
 		gamegui.add(play4deck2);
 		
 		play5deck1 = new JLabel();
 		play5deck1.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		play5deck1.setBounds(1030,160,71,100);
+		play5deck1.setVisible(false);
 		gamegui.add(play5deck1);
 		
 		play5deck2 = new JLabel();
 		play5deck2.setIcon(new ImageIcon(MainPanel.class.getResource("/cardsimages/back.jpg")));
 		play5deck2.setBounds(1110,160,71,100);
+		play5deck2.setVisible(false);
 		gamegui.add(play5deck2);
 		
 		dealer1 = new JLabel("Dealer");
@@ -514,52 +532,63 @@ public class MainPanel extends JPanel {
 		player1 = new JLabel();
 		player1.setIcon(new ImageIcon(MainPanel.class.getResource("/GUIs/person.png")));
 		player1.setBounds(10,10,128,128);
+		player1.setVisible(false);
 		gamegui.add(player1);
 		 
 		play1 = new JLabel("Player 1");
 		play1.setBounds(10,140,50,25);
 		play1.setForeground(Color.BLACK);
+		play1.setVisible(false);
 		gamegui.add(play1);
 		
 		player2 = new JLabel();
 		player2.setBounds(10,400,128,128);
 		player2.setIcon(new ImageIcon(MainPanel.class.getResource("/GUIs/person.png")));
+		player2.setVisible(false);
 		gamegui.add(player2);
 		
 		play2 = new JLabel("Player 2");
 		play2.setBounds(10,370,50,25);
 		play2.setForeground(Color.BLACK);
+		play2.setVisible(false);
 		gamegui.add(play2);
 		
 		player3 = new JLabel();
 		player3.setBounds(540,620,128,128);
 		player3.setIcon(new ImageIcon(MainPanel.class.getResource("/GUIs/person.png")));
+		player3.setVisible(false);
 		gamegui.add(player3);
 		
 		play3 = new JLabel("Player 3");
 		play3.setBounds(540,600,50,25);
 		play3.setForeground(Color.BLACK);
+		play3.setVisible(false);
 		gamegui.add(play3);
 		
 		player4 = new JLabel();
 		player4.setBounds(1040,400,128,128);
 		player4.setIcon(new ImageIcon(MainPanel.class.getResource("/GUIs/person.png")));
+		player4.setVisible(false);
 		gamegui.add(player4);
 		
 		play4 = new JLabel("Player 4");
 		play4.setBounds(1030,370,50,25);
 		play4.setForeground(Color.BLACK);
+		play4.setVisible(false);
 		gamegui.add(play4);
 		
 		player5 = new JLabel();
 		player5.setBounds(1040,10,128,128);
 		player5.setIcon(new ImageIcon(MainPanel.class.getResource("/GUIs/person.png")));
+		player5.setVisible(false);
 		gamegui.add(player5);
 		
 		play5 = new JLabel("Player 5");
 		play5.setBounds(1040,140,50,25);
 		play5.setForeground(Color.BLACK);
+		play5.setVisible(false);
 		gamegui.add(play5);
+		
 		
 		
 		ready = new JButton("Ready!");
@@ -571,6 +600,17 @@ public class MainPanel extends JPanel {
 			}
 		});
 		ready.setBounds(200, 10, 89, 23);
+		gamegui.add(ready);
+		
+		
+		back = new JButton("Back");
+		back.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				//Set this to be homePanel
+			}
+		});
+		back.setBounds(300, 10, 89, 23);
 		gamegui.add(ready);
 		
 	}
